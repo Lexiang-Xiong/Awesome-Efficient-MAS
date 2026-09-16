@@ -1,0 +1,35 @@
+name: Suggest a paper
+description: Suggest a relevant paper or a taxonomy correction.
+title: '[Paper] '
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Paper title
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Paper URL
+      description: Prefer arXiv, a DOI, or an official proceedings page.
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Suggested section
+      options:
+        - Topology
+        - Runtime
+        - Optimization
+        - Collaboration Boundary
+        - Evaluation
+        - Other
+  - type: textarea
+    id: relevance
+    attributes:
+      label: Relevance and evidence
+      description: Explain the controlled object, baseline, quality measure, and reported resource costs. Mention offline costs or limitations where relevant.
+    validations:
+      required: true
