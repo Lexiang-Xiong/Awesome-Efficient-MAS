@@ -31,7 +31,7 @@ Alternatively, deploy from branch `main`, folder `/docs`, and remove the Actions
 
 ## Confirm public metadata
 
-Edit `docs/data/site.js` to set `repositoryUrl` and `paperUrl`. Empty entries hide the corresponding button. Confirm the authors and affiliations against the final manuscript and add the published survey BibTeX to the README generation template in `scripts/sync_survey.py`. No guessed citation is shipped.
+Edit `docs/data/site.js` to set `repositoryUrl` and `paperUrl`. Empty entries hide the corresponding button. The homepage displays a copyable preprint citation template in `docs/index.html` (`citation-code`), using the supplied title and author list, `archivePrefix = {arXiv}`, and empty `journal` and `eprint` fields. The authors confirmed that an arXiv identifier is not yet assigned. When publication details are available, replace this entry with the official BibTeX, update its status note, and add the published citation to the README generation template in `scripts/sync_survey.py`.
 
 Before publication, the authors should select the repository's intended license. A code license does not grant reuse rights to third-party papers or figures.
 
@@ -51,5 +51,6 @@ python scripts/validate.py
 ```
 
 Review the generated changes, commit, and push. The source manuscript stays outside this repository. Generated data records source-relative filenames and a source hash, with no machine-specific paths.
+
 
 Official documentation: [Publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site), [Custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).

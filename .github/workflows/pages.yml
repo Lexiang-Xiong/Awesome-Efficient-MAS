@@ -2,7 +2,7 @@ name: Deploy survey to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ['docs/**', 'scripts/validate.py', '.github/workflows/pages.yml']
+    paths: ['docs/**', 'scripts/validate.py', 'scripts/test_library.cjs', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read

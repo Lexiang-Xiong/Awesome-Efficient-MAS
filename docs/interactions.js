@@ -109,28 +109,71 @@ paintGraph();
 const atlasFigures={
   Topology:{file:'pruning_figure',ratio:'1140 / 405',source:'figures/generated/pruning_figure.pdf',
     regions:[
-      {name:'Pruning',search:'Topology Pruning',box:[0,0,66,49],focus:[28,22],scale:1.65,description:'Remove redundant agents or communication links from an existing topology. The intervention changes which paths remain available.',examples:'AgentPrune · AgentDropout'},
-      {name:'Construction',search:'Topology Construction',box:[0,50,66,49],focus:[28,78],scale:1.65,description:'Select roles and construct a task-specific graph. The goal is useful coordination, rather than simply the smallest possible team.',examples:'G-Designer · GTD · HiVA'},
-      {name:'Adaptation',search:'Topology Adaptation',box:[67,0,32,99],focus:[88,50],scale:1.8,description:'Revise the collaboration structure from intermediate feedback or transferred priors as the task evolves.',examples:'TopoPrior · TacoMAS · MasFACT'}]},
+      {name:'Pruning',search:'Topology Pruning',box:[0,0,66,49],description:'Remove redundant agents or communication links from an existing topology. The intervention changes which paths remain available.',examples:'AgentPrune · AgentDropout'},
+      {name:'Construction',search:'Topology Construction',box:[0,50,66,49],description:'Select roles and construct a task-specific graph. The goal is useful coordination, rather than simply the smallest possible team.',examples:'G-Designer · GTD · HiVA'},
+      {name:'Adaptation',search:'Topology Adaptation',box:[67,0,32,99],description:'Revise the collaboration structure from intermediate feedback or transferred priors as the task evolves.',examples:'TopoPrior · TacoMAS · MasFACT'}]},
   Runtime:{file:'runtime_overview_figure',ratio:'1500 / 400',source:'figures/generated/runtime_overview_figure.pdf',
     regions:[
-      {name:'Communication',search:'Communication',box:[0,0,49,48],focus:[23,22],scale:1.85,description:'Select and compress exchanged content. Shorter messages save resources only if the information needed for the task survives.',examples:'S2-MAD · EcoLANG · DebateOCR'},
-      {name:'Routing',search:'Routing',box:[50,0,49,48],focus:[77,22],scale:1.85,description:'Choose the next model, agent, or context view according to the current execution state and quality requirement.',examples:'CASTER · RCR-Router · Smurfs'},
-      {name:'State',search:'State',box:[0,49,49,50],focus:[23,80],scale:1.85,description:'Reuse memory and model cache instead of reconstructing the same execution state. Logical decisions and serving work are distinct costs.',examples:'TokenDance · KVCOMM'},
-      {name:'Scheduling',search:'Scheduling',box:[50,49,49,50],focus:[77,80],scale:1.85,description:'Turn dependencies into an execution plan. Concurrency, deferral, and recovery determine latency and capacity.',examples:'Act-or-Defer · AgentRadio'}]},
+      {name:'Communication',search:'Communication',box:[0,0,49,48],description:'Select and compress exchanged content. Shorter messages save resources only if the information needed for the task survives.',examples:'S2-MAD · EcoLANG · DebateOCR'},
+      {name:'Routing',search:'Routing',box:[50,0,49,48],description:'Choose the next model, agent, or context view according to the current execution state and quality requirement.',examples:'CASTER · RCR-Router · Smurfs'},
+      {name:'State',search:'State',box:[0,49,49,50],description:'Reuse memory and model cache instead of reconstructing the same execution state. Logical decisions and serving work are distinct costs.',examples:'TokenDance · KVCOMM'},
+      {name:'Scheduling',search:'Scheduling',box:[50,49,49,50],description:'Turn dependencies into an execution plan. Concurrency, deferral, and recovery determine latency and capacity.',examples:'Act-or-Defer · AgentRadio'}]},
   Optimization:{file:'optimization_figure',ratio:'1500 / 425',source:'figures/generated/optimization_figure.pdf',
     regions:[
-      {name:'Prompt optimization',search:'Prompt Optimization',box:[0,0,49,48],focus:[23,22],scale:1.85,description:'Refine coupled agent instructions using system-level feedback. Improving a local prompt need not improve the whole workflow.',examples:'MAPGD · MAPRO · MASPO'},
-      {name:'Workflow search',search:'Workflow Search',box:[50,0,49,48],focus:[77,22],scale:1.85,description:'Search executable collaboration programs. The deployed workflow must repay the cost of generating and evaluating its candidates.',examples:'MASS · AFlow · MetaAgent'},
-      {name:'Policy learning',search:'Policy Learning',box:[0,51,49,48],focus:[23,80],scale:1.85,description:'Train sequential decisions from collaboration trajectories. Training cost, sample efficiency, and deployment cost are separate quantities.',examples:'OPTIMA · CORL · LEMON'},
-      {name:'Continual learning',search:'Continual Learning',box:[50,51,49,48],focus:[77,80],scale:1.85,description:'Convert accumulated experience into skills or procedures that improve future requests. Reuse and maintenance determine lifecycle efficiency.',examples:'MetaTeam · SkillGraph · G-Memory'}]}
+      {name:'Prompt optimization',search:'Prompt Optimization',box:[0,0,49,48],description:'Refine coupled agent instructions using system-level feedback. Improving a local prompt need not improve the whole workflow.',examples:'MAPGD · MAPRO · MASPO'},
+      {name:'Workflow search',search:'Workflow Search',box:[50,0,49,48],description:'Search executable collaboration programs. The deployed workflow must repay the cost of generating and evaluating its candidates.',examples:'MASS · AFlow · MetaAgent'},
+      {name:'Policy learning',search:'Policy Learning',box:[0,51,49,48],description:'Train sequential decisions from collaboration trajectories. Training cost, sample efficiency, and deployment cost are separate quantities.',examples:'OPTIMA · CORL · LEMON'},
+      {name:'Continual learning',search:'Continual Learning',box:[50,51,49,48],description:'Convert accumulated experience into skills or procedures that improve future requests. Reuse and maintenance determine lifecycle efficiency.',examples:'MetaTeam · SkillGraph · G-Memory'}]}
 };
 let atlasLayer='Topology';let atlasRegion=0;let atlasFocused=false;
+// Pixel bounds in the original PNGs. The topology feedback label extends into
+// the gutter, so its outline is shared by the two adjacent clipping paths.
+const atlasCrops={
+  Topology:{size:[1140,405],panels:[
+    {bounds:[0,0,770,200]},
+    {bounds:[0,210,770,195],outline:'0,210 770,210 770,230 700,230 700,290 770,290 770,405 0,405'},
+    {bounds:[700,0,440,405],hotspot:[770,0,370,405],outline:'770,0 1140,0 1140,405 770,405 770,290 700,290 700,230 770,230'}
+  ]},
+  Runtime:{size:[1500,400],panels:[
+    {bounds:[0,0,745,190]},{bounds:[745,0,755,190]},
+    {bounds:[0,190,745,210]},{bounds:[745,190,755,210]}
+  ]},
+  Optimization:{size:[1500,425],panels:[
+    {bounds:[0,0,750,207]},{bounds:[750,0,750,207]},
+    {bounds:[0,207,750,218]},{bounds:[750,207,750,218]}
+  ]}
+};
+function updateAtlasCrop(){
+  const figure=atlasFigures[atlasLayer],crop=atlasCrops[atlasLayer];
+  const {bounds,outline}=crop.panels[atlasRegion];
+  const stage=$('.figure-stage'),svg=$('#region-image');
+  stage.style.setProperty('--crop-ratio',bounds[2]/bounds[3]);
+  svg.setAttribute('viewBox',bounds.join(' '));
+  svg.setAttribute('aria-label',`${figure.regions[atlasRegion].name} — cropped manuscript figure`);
+  const clip=svgElement('clipPath',{id:'atlas-crop-clip',clipPathUnits:'userSpaceOnUse'});
+  clip.append(outline?svgElement('polygon',{points:outline}):svgElement('rect',{x:bounds[0],y:bounds[1],width:bounds[2],height:bounds[3]}));
+  const defs=svgElement('defs',{});defs.append(clip);
+  svg.replaceChildren(defs,svgElement('image',{href:`assets/figures/${figure.file}.png`,width:crop.size[0],height:crop.size[1],'clip-path':'url(#atlas-crop-clip)'}));
+  $('#region-restore').setAttribute('aria-label',`Restore complete ${atlasLayer.toLowerCase()} figure`);
+  $('#atlas-caption').textContent=atlasFocused?`${figure.regions[atlasRegion].name} · click image to restore`:'Hover to explore · click a region to enlarge';
+}
 function renderAtlas(layer){
   atlasLayer=layer;atlasRegion=0;atlasFocused=false;const figure=atlasFigures[layer];
+  const crops=atlasCrops[layer];
+  figure.regions.forEach((r,i)=>{
+    const bounds=crops.panels[i].hotspot||crops.panels[i].bounds;
+    r.box=bounds.map((value,j)=>100*value/crops.size[j%2]);
+  });
   document.querySelectorAll('[data-layer]').forEach(b=>b.setAttribute('aria-controls','figure-atlas'));
   $('#figure-atlas').setAttribute('role','tabpanel');$('#figure-atlas').setAttribute('aria-labelledby','tab-'+layer.toLowerCase());$('#figure-atlas').tabIndex=0;
   $('#figure-atlas').innerHTML=`<div class="atlas-shell"><div class="atlas-toolbar"><span>FIGURE EXPLORER / ${layer.toUpperCase()}</span><button id="open-atlas" class="compact-button">Open full screen ⤢</button></div><div class="atlas-body"><div class="atlas-paper"><div class="figure-stage" style="--figure-ratio:${figure.ratio}"><img src="assets/figures/${figure.file}.png" alt="Original manuscript figure: ${layer} methods" loading="lazy" decoding="async">${figure.regions.map((r,i)=>`<button class="figure-hotspot" data-region="${i}" aria-label="Inspect ${r.name}" style="--x:${r.box[0]}%;--y:${r.box[1]}%;--w:${r.box[2]}%;--h:${r.box[3]}%"><span>${i+1}</span></button>`).join('')}</div><p class="figure-caption"><span>Original figure · ${layer}</span><span>Hover / focus / select</span></p></div><div class="atlas-info"><span class="atlas-step" id="atlas-step"></span><h3 id="atlas-title"></h3><p id="atlas-explanation"></p><div class="atlas-examples" id="atlas-examples"></div><button id="focus-region" class="compact-button">Focus this panel ⤢</button><a id="atlas-papers" href="#library">Related papers →</a></div></div><div class="atlas-regions" role="group" aria-label="Figure regions">${figure.regions.map((r,i)=>`<button class="atlas-region" data-region-choice="${i}" aria-pressed="${i===0}">${String(i+1).padStart(2,'0')} ${r.name}</button>`).join('')}</div></div><p class="atlas-description">${layers[layer].description}</p>`;
+  const restore=document.createElement('button');
+  restore.id='region-restore';restore.className='region-restore';restore.hidden=true;
+  restore.append(svgElement('svg',{id:'region-image',role:'img',preserveAspectRatio:'xMidYMid meet'}));
+  $('.figure-stage').append(restore);
+  $('.figure-caption span:last-child').id='atlas-caption';
+  restore.addEventListener('click',()=>setAtlasFocus(false));
+  restore.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();setAtlasFocus(false);}});
   document.querySelectorAll('.figure-hotspot').forEach(b=>{
     b.addEventListener('pointerenter',()=>{if(!atlasFocused)setAtlasRegion(Number(b.dataset.region));});
     b.addEventListener('focus',()=>{if(!atlasFocused)setAtlasRegion(Number(b.dataset.region));});
@@ -153,19 +196,48 @@ function setAtlasRegion(index){
   $('#atlas-examples').textContent=r.examples;
   document.querySelectorAll('[data-region-choice]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.regionChoice)===index)));
   document.querySelectorAll('.figure-hotspot').forEach(b=>b.classList.toggle('is-active',Number(b.dataset.region)===index));
-  const stage=$('.figure-stage');stage.style.setProperty('--focus-x',r.focus[0]+'%');stage.style.setProperty('--focus-y',r.focus[1]+'%');stage.style.setProperty('--focus-scale',r.scale);
+  updateAtlasCrop();
   const info=$('.atlas-info');info.classList.remove('is-changing');requestAnimationFrame(()=>info.classList.add('is-changing'));
 }
 function setAtlasFocus(focus){
   atlasFocused=focus;$('.figure-stage').classList.toggle('is-focused',focus);
+  $('.figure-stage > img').hidden=focus;
+  $('#region-restore').hidden=!focus;
   document.querySelectorAll('.figure-hotspot').forEach(b=>{b.tabIndex=focus?-1:0;b.inert=focus;});
   $('#focus-region').textContent=focus?'Show complete figure ↙':'Focus this panel ⤢';
   $('#focus-region').setAttribute('aria-pressed',String(focus));
-  if(focus)$('#focus-region').focus({preventScroll:true});
+  updateAtlasCrop();
+  if(focus)$('#region-restore').focus({preventScroll:true});
+  else document.querySelector(`.figure-hotspot[data-region="${atlasRegion}"]`).focus({preventScroll:true});
 }
 const baseShowLayer=showLayer;
 showLayer=layer=>{baseShowLayer(layer);renderAtlas(layer);};
 renderAtlas('Topology');
+
+// Copy exactly the citation displayed on the page, including on file:// previews.
+$('#copy-citation').addEventListener('click',async()=>{
+  const button=$('#copy-citation'),code=$('#citation-code'),status=$('#citation-status');
+  const citation=code.textContent.trim();
+  button.disabled=true;
+  try{
+    let copied=false;
+    if(navigator.clipboard?.writeText){
+      try{await navigator.clipboard.writeText(citation);copied=true;}catch{/* Try the local-preview fallback. */}
+    }
+    if(!copied){
+      const field=document.createElement('textarea');field.value=citation;
+      field.className='clipboard-buffer';field.setAttribute('readonly','');document.body.append(field);
+      try{field.select();copied=document.execCommand('copy');}finally{field.remove();button.focus({preventScroll:true});}
+    }
+    if(!copied)throw new Error('Clipboard unavailable');
+    button.textContent='Copied ✓';status.textContent='BibTeX copied to clipboard.';
+  }catch{
+    const range=document.createRange();range.selectNodeContents(code);
+    const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+    status.textContent='Copy is unavailable. Citation selected — press Ctrl+C or ⌘C to copy.';
+    button.textContent='Copy BibTeX';
+  }finally{button.disabled=false;}
+});
 
 // Accessible native dialog: Escape closes it and focus returns to its opener.
 const figureDialog=$('#figure-dialog');let viewerZoom=1;let viewerOpener=null;let viewerDrag=null;
@@ -207,7 +279,7 @@ const lengths=[0];for(let i=1;i<massStages.length;i++)lengths[i]=lengths[i-1]+Ma
 massStages.forEach((s,i)=>{
   const point=svgElement('g',{class:'chart-point',role:'button',tabindex:0,'aria-label':`${s.title}: ${s.score.toFixed(2)} mean score`,'aria-pressed':'false','data-stage':i});
   point.append(svgElement('rect',{x:plotX(i)-37,y:10,width:74,height:300,fill:'transparent','pointer-events':'all'}));
-  point.append(svgElement('circle',{cx:plotX(i),cy:plotY(s.score),r:22,class:'point-halo'}));point.append(svgElement('circle',{cx:plotX(i),cy:plotY(s.score),r:7}));
+  point.append(svgElement('circle',{cx:plotX(i),cy:plotY(s.score),r:11,class:'point-halo'}));point.append(svgElement('circle',{cx:plotX(i),cy:plotY(s.score),r:5,class:'point-marker'}));
   const label=svgElement('text',{x:plotX(i),y:300,'text-anchor':'middle'});label.textContent=s.short;point.append(label);
   const score=svgElement('text',{x:plotX(i),y:plotY(s.score)-20,'text-anchor':'middle'});score.textContent=s.score.toFixed(2);point.append(score);
   point.addEventListener('click',()=>selectMassStage(i));point.addEventListener('pointerenter',()=>selectMassStage(i));point.addEventListener('focus',()=>selectMassStage(i));point.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectMassStage(i);}});massSVG.append(point);

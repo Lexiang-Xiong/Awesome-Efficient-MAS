@@ -2,6 +2,28 @@
 
 Validated locally on 2026-09-16.
 
+## Abstract removal — 2026-09-17
+
+- Removed all abstract expanders and unavailable-abstract notices at the authors' request. Removed the unused abstract cache, importer, styles, and page dependency.
+- Paper metadata, source links, evidence details, category filtering, and pagination remain available. The abstract checks below describe the previous revision and no longer apply to the current interface.
+
+## Library and chart regression checks — 2026-09-17
+
+- Reproduced atlas navigation to the six Continual Learning papers, then verified that Topology resets stale search/year/evidence filters and returns 27 papers. All papers returns 256; Show all renders all 256 cards.
+- Default pagination shows 25 entries and explicit result ranges. Node regression checks cover every category's total, stale filters, page clamping, all 256 entries across pages without duplicates, whitespace queries, and empty results. These checks now run with the Pages validation command.
+- Added 249 source-verified abstracts, expandable inline with provenance links. Seven unavailable abstracts are explicitly marked rather than inferred. Cached JSON and JavaScript must match during validation.
+- Reduced MASS point radius from 7 to 5 and halo radius from 22 to 11. Marker and halo styling are separated; the selected halo is translucent with no solid white border. Large pointer hit targets remain unchanged.
+- Verified desktop and 390 × 844 mobile interactions and abstract layouts with no horizontal overflow. Browser console was free of errors during these checks.
+- Updated the citation to the requested preprint template with empty journal and eprint fields; no arXiv identifier has been assigned according to the authors.
+
+## Panel cropping and citation revision
+
+- Replaced whole-image scaling with SVG viewports cropped to the selected panel. Each viewport follows its panel's aspect ratio; the topology feedback label uses a shaped clip so adjacent artwork is excluded without losing the label.
+- Checked all 11 panels for correct viewport bounds, displayed aspect ratio, hidden overview, and click-to-restore behavior. Checked keyboard Enter activation and Escape restoration.
+- Checked desktop (1440 × 1000) and mobile (390 × 844) layouts. Mobile panel and citation views have no horizontal page overflow.
+- The homepage displays the survey's manuscript BibTeX and a copy button, replacing the bibliography download and paper-suggestion invitation. Publication year and identifiers remain unset pending confirmation.
+- The copy button reports success; an actual paste into the local search input verified the citation was copied. The input was cleared after verification. Clipboard fallback behavior is implemented but was not separately forced during browser checks.
+
 ## Blue interactive revision
 
 - Added a blue theme, navigation progress, and reduced-motion-aware transitions.
