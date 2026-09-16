@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import hashlib
+import html
 import json
 from pathlib import Path
 import re
@@ -177,7 +178,7 @@ def write_readme(data):
         "**Qi Li*** · **Lexiang Xiong*** · **Haiquan Lu*** · Wenjie Qu · Xingyi Yang · Jiaheng Zhang · Xinchao Wang", "",
         "National University of Singapore · University of California, Berkeley · The Hong Kong Polytechnic University", "", "<sub>* Equal contribution</sub>", "",
         f"**{len(papers)} cited works** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**", "",
-        "[Explore the website source](docs/index.html) · [Bibliography](docs/data/references.bib) · [Paper dataset](docs/data/papers.json) · [Contribute](CONTRIBUTING.md)", "", "</div>", "",
+        "[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)", "", "</div>", "",
         "> When does the benefit of collaboration justify its end-to-end resource cost?", "",
         "LLM multi-agent systems broaden search and combine evidence, but introduce repeated inference, growing message histories, and coordination overhead. This survey connects quality gains to their complete resource cost: first identifying the **collaboration boundary**, then organizing methods by **Topology**, **Runtime**, and **Optimization**.", "",
         "## At a glance", "", "| Control point | What changes | Method families |", "| --- | --- | --- |",
@@ -185,12 +186,12 @@ def write_readme(data):
         "| **Runtime** | Information, models, state, and work activated per request | Communication · Routing · State · Scheduling |",
         "| **Optimization** | Reusable configurations learned through search or training | Prompt optimization · Workflow search · Policy learning · Continual learning |", "",
         "```mermaid", "flowchart LR", '  B["Collaboration boundary<br/>Decomposition · Information · Escalation"] --> T[Topology]', '  B --> R[Runtime]', '  B --> O[Optimization]', '  T --> E["Evaluation<br/>Quality × realized resources × lifecycle cost"]', '  R --> E', '  O --> E', '  E --> S["Synthesis & open problems"]', '  style T fill:#85baff,color:#070d1c,stroke:#448aff', '  style R fill:#78d6fa,color:#070d1c,stroke:#3c91bc', '  style O fill:#b8bbff,color:#070d1c,stroke:#777bca', "```", "",
-        "## Reading guide", "", "- [Representative methods](#representative-methods)", "- [Paper collection](#paper-collection)", "- [Evaluation perspective](#evaluation-perspective)", "- [Open problems](#open-problems)", "- [Run and publish](#run-and-publish)", "",
-        "## Representative methods", "", f"The manuscript's evidence table covers **{data['stats']['evidenceMethods']} methods**. Reported effects describe the measured coordinates, not a guarantee of improvement on every resource or workload. Expand a method on the website for its evidence coverage.", "", "| Family | Method | Reported effect | Main boundary |", "| --- | --- | --- | --- |"]
+        "## Reading guide", "", "- [Representative methods](#representative-methods)", "- [Paper collection](#paper-collection)", "- [Evaluation perspective](#evaluation-perspective)", "- [Open problems](#open-problems)", "- [Citation](#citation)", "",
+        "## Representative methods", "", f"The survey compares **{data['stats']['evidenceMethods']} methods** across the three control points. The table summarizes their reported effects and the conditions that matter when interpreting those results.", "", "| Family | Method | Reported effect | Main boundary |", "| --- | --- | --- | --- |"]
     for p in sorted((p for p in papers if p["evidence"]), key=lambda p:(['Topology','Runtime','Optimization'].index(p['evidence']['family']),p['evidence']['subfamily'],p['method'])):
         e=p['evidence']; method=f"[{md(p['method'])}]({p['url']})" if p['url'] else md(p['method'])
         lines.append(f"| {e['family']} / {e['subfamily']} | {method} | {md(e['effect'])} | {md(e['boundary'])} |")
-    lines.extend(["", "## Paper collection", "", "Generated from active citations in the supplied manuscript. Section membership records **where a paper is cited**; it does not assign all references to an exclusive method category. A paper may appear in multiple sections. Publication years and links are copied from the bibliography and are not a live metadata feed.", ""])
+    lines.extend(["", "## Paper collection", "", "Explore the works discussed in the survey, grouped by section. A paper may appear in multiple sections when it addresses several aspects of efficiency.", ""])
     for category in ["Topology", "Runtime", "Optimization", "Collaboration Boundary", "Background", "Foundations", "Evaluation", "Synthesis", "Open Problems", "Introduction", "Conclusion"]:
         selected=sorted((p for p in papers if category in p['categories']), key=lambda p:(-(p['year'] or 0),p['title']))
         if not selected: continue
@@ -202,18 +203,13 @@ def write_readme(data):
             lines.append(f"| {p['year'] or '—'} | {title}<br><sub>{md(by)}</sub> |")
         lines.extend(["", "</details>", ""])
     lines.extend(["## Evaluation perspective", "", "Efficiency is a quality–resource trade-off. Use matched baselines, measure realized consumption, and include the lifecycle costs of building and maintaining a configuration.", "", "For example, the survey reports that MAPGD reduces calls from 962 to 643 and tokens from 256k to 236k relative to ProTeGi under a 50-query protocol, while F1 rises from 0.83 to 0.87. Wall time increases from 159.4 to 201.5 seconds. These are paper-specific comparisons, not a cross-paper ranking.", "", "## Open problems", "", "1. **Comparable evaluation:** common budgets, baselines, and uncertainty-aware quality–resource curves.", "2. **Adaptive control:** request- and step-level decisions to continue, escalate, or stop.", "3. **Transfer under drift:** preserving gains as models, tools, and workloads change.", "4. **Causal attribution:** separating the effects of topology, prompts, information, and compute.", "5. **End-to-end cost:** including serving state, tools, recovery, defenses, and maintenance.", "",
-        "## Publication and citation", "", "The supplied manuscript has no confirmed public survey URL or publication identifier. Its existing `BadWAM` links refer to a different project and are deliberately not reused here. Add the confirmed survey URL to `docs/data/site.js` and the final BibTeX citation here when available. Author order and affiliations currently follow `main.tex`.", "",
-        "## Run and publish", "", "The site is plain HTML, CSS, and JavaScript, with no npm dependencies or build step.", "", "```bash", "python -m http.server 4173 --directory docs", "```", "", "Open http://localhost:4173. You can also open `docs/index.html` directly; the dataset is included as a local script.", "", "To refresh the collection from a revised manuscript:", "", "```bash", 'python scripts/sync_survey.py --source "/path/to/manuscript"', "python scripts/validate.py", "```", "", "The importer rebuilds `docs/data/papers.json`, `docs/data/papers.js`, `docs/data/references.bib`, and this README. Keep ongoing editorial notes in separate files so regeneration does not overwrite them.", "", "See [DEPLOYMENT.md](DEPLOYMENT.md) for GitHub repository creation and GitHub Pages deployment. The included workflow deploys only `docs/`. Manuscript sources, local files, and development scripts are not part of the public website.", "", "## Contributing", "", "See [CONTRIBUTING.md](CONTRIBUTING.md). Relevant papers, taxonomy corrections, and evidence-accounting updates are welcome. Please include a stable paper URL and identify the claim or category being corrected.", "", "## Acknowledgements", "", "Presentation references: [World Action Models](https://world-action-models.github.io/) and [Awesome VLA Safety](https://github.com/LiQiiiii/Awesome-VLA-Safety). This site's implementation and visual design were created independently for the MAS efficiency survey.", "", "## Reuse", "", "Publication and licensing terms are to be confirmed by the survey authors. No license to third-party papers or their figures is implied by inclusion in this bibliography.", ""])
-    feature_index = lines.index("## At a glance")
-    lines[feature_index:feature_index] = [
-        "## Interactive homepage", "",
-        "- **Collaboration playground:** drag agents, trace their connections, adjust the link budget, or disable a participant. This diagram is illustrative, not an efficiency benchmark.",
-        "- **Visual atlas:** explore three original manuscript figures through 11 annotated regions. Hover or focus to inspect, select to magnify, and follow related papers.",
-        "- **Figure viewer:** full-screen viewing, zoom, pan, download, and keyboard dismissal.",
-        "- **Evidence lab:** scrub through the five cumulative MASS optimization stages, inspect exact mean scores, and compare with the original figure.",
-        "- **Paper library:** search and filter the 256 cited works, including 29 representative methods with evidence details.",
-        "", "The blue interface supports keyboard navigation and reduced-motion preferences. Figure sources and export bounds are documented in [the asset notes](docs/assets/figures/README.md).", ""
-    ]
+        "## Citation", "", "If you find this survey useful, please cite our work. The entry below is a preprint template; the arXiv identifier and publication details are forthcoming.", ""])
+    # Keep the reader-facing citation aligned with the copyable website entry.
+    page = (ROOT / "docs/index.html").read_text(encoding="utf-8")
+    citation = re.search(r'<code id="citation-code">(.*?)</code>', page, re.S)
+    if not citation:
+        raise ValueError("Survey citation is missing from the homepage")
+    lines.extend(["```bibtex", html.unescape(citation.group(1)).strip(), "```", ""])
     (ROOT / "README.md").write_text("\n".join(lines), encoding="utf-8")
 
 if __name__ == "__main__":

@@ -2,6 +2,15 @@
 
 Validated locally on 2026-09-16.
 
+## Resource shortcuts and combined filters — 2026-09-17
+
+- Added hero GitHub, Paper, PDF, and Cite shortcuts. GitHub points to the confirmed repository; Paper/PDF are disabled placeholders until configured. Cite reaches the existing copyable citation.
+- Default pagination is now five papers, with a ten-paper option, previous/next controls above and below the list, first/last controls, and a page selector. Checked page 2 (6–10), page 52 (256–256), and disabled controls at boundaries. The earlier 25-paper/show-all design below is superseded.
+- Section checkboxes support OR/AND combinations while retaining explicit search/year/method-family/evidence filters. All papers and Clear all reset those filters. Active chips remove individual constraints; atlas navigation starts a fresh selection.
+- Confirmed Topology OR Runtime returns 141 papers, and Topology AND Runtime returns 2. Facet counts reflect search, year, method family, and evidence constraints, before applying section tags.
+- Regression checks cover all category totals, combined predicates, method-family filtering, atlas reset, and all 256 papers across the shorter pages without duplicates.
+- Desktop and 390 × 844 mobile checks cover tag selection, page navigation, resource states, and citation navigation; no horizontal overflow was observed.
+
 ## Abstract removal — 2026-09-17
 
 - Removed all abstract expanders and unavailable-abstract notices at the authors' request. Removed the unused abstract cache, importer, styles, and page dependency.

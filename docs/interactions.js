@@ -184,7 +184,7 @@ function renderAtlas(layer){
   $('#open-atlas').addEventListener('click',()=>openFigure(`assets/figures/${figure.file}.png`,`${layer} · original figure`,`${layers[layer].description} Source: ${figure.source}. Original artwork is unchanged; page whitespace is cropped.`));
   $('#atlas-papers').addEventListener('click',()=>{
     const query=figure.regions[atlasRegion].search;
-    Object.assign(state,{category:layer,query,year:'all',representative:false,page:1});
+    Object.assign(state,libraryModel.browse(state,layer),{query});syncLibraryControls();
     $('#search').value=query;$('#year').value='all';$('#representative').checked=false;render();
   });
   setAtlasRegion(0);

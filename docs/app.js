@@ -14,15 +14,17 @@ $('#motion-toggle').addEventListener('click',()=>{motionPaused=!motionPaused;upd
 const layers={Topology:{description:'Change the participating agents and their communication structure. Remove redundancy, construct task-specific teams, or adapt connections from feedback.',families:[['Topology pruning','Simplify an existing collaboration graph by removing redundant agents or edges.'],['Topology construction','Create a task-specific collaboration structure.'],['Topology adaptation','Revise the organization as tasks or intermediate evidence change.']]},Runtime:{description:'Control what an existing structure activates for the current request: information, models, state, and execution schedules.',families:[['Communication','Compress and select messages while preserving useful evidence.'],['Routing','Choose the agent, model, or context appropriate to the current step.'],['State','Manage persistent memory and share reusable cache state.'],['Scheduling','Respect dependencies while controlling concurrency, capacity, and retries.']]},Optimization:{description:'Learn a reusable asset through search or training. Account for the design cost as well as the savings obtained when that asset is reused.',families:[['Prompt optimization','Refine coupled instructions through system-level feedback.'],['Workflow search','Search executable programs and compound collaboration workflows.'],['Policy learning','Train sequential decisions from rewarded collaboration trajectories.'],['Continual learning','Turn accumulated experience into reusable skills and procedures.']]}};
 function showLayer(name){const layer=layers[name];document.querySelectorAll('[data-layer]').forEach(b=>{const selected=b.dataset.layer===name;b.setAttribute('aria-selected',selected);b.tabIndex=selected?0:-1;});$('#taxonomy-detail').setAttribute('aria-labelledby','tab-'+name.toLowerCase());$('#taxonomy-detail').innerHTML=`<div class="layer-description">${layer.description}<a href="#library" data-browse="${name}">Explore ${name.toLowerCase()} papers →</a></div><div class="subfamilies">${layer.families.map(([title,desc])=>`<div class="subfamily"><h3>${title}</h3><p>${desc}</p></div>`).join('')}</div>`;$('#taxonomy-detail [data-browse]').addEventListener('click',()=>{browseCategory(name);});}
 document.querySelectorAll('[data-layer]').forEach((b,index)=>{b.addEventListener('click',()=>showLayer(b.dataset.layer));b.addEventListener('keydown',e=>{const tabs=[...document.querySelectorAll('[data-layer]')];let next;if(e.key==='ArrowRight')next=(index+1)%3;if(e.key==='ArrowLeft')next=(index+2)%3;if(e.key==='Home')next=0;if(e.key==='End')next=2;if(next!==undefined){e.preventDefault();tabs[next].focus();showLayer(tabs[next].dataset.layer);}});});showLayer('Topology');
-const corpus=window.SURVEY_DATA||{papers:[],stats:{cited:0}};const papers=corpus.papers;const state={category:'All papers',query:'',year:'all',sort:'year-desc',representative:false,page:1,pageSize:25};
+const corpus=window.SURVEY_DATA||{papers:[],stats:{cited:0}};const papers=corpus.papers;const state={categories:[],match:'any',subfamily:'all',query:'',year:'all',sort:'year-desc',representative:false,page:1,pageSize:5};
 const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const categories=['All papers','Topology','Runtime','Optimization','Collaboration Boundary','Background','Foundations','Evaluation','Synthesis','Open Problems','Introduction','Conclusion'];
 $('#corpus-count').textContent=corpus.stats.cited||papers.length;
 const years=[...new Set(papers.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);years.forEach(year=>{const option=document.createElement('option');option.value=year;option.textContent=year;$('#year').append(option);});
+const families=[...new Set(papers.flatMap(p=>p.subfamilies))].sort();
+for(const family of families){const option=document.createElement('option');option.value=family;option.textContent=family;$('#subfamily').append(option);}
 function safeUrl(url){try{const u=new URL(url);return ['http:','https:'].includes(u.protocol)?u.href:null;}catch{return null;}}
 function syncLibraryControls(){
   $('#search').value=state.query;$('#year').value=state.year;
-  $('#representative').checked=state.representative;$('#sort').value=state.sort;
+  $('#representative').checked=state.representative;$('#sort').value=state.sort;$('#tag-match').value=state.match;$('#subfamily').value=state.subfamily;
 }
 function browseCategory(category){
   Object.assign(state,libraryModel.browse(state,category));
@@ -31,31 +33,63 @@ function browseCategory(category){
 function render(){
   const result=libraryModel.select(papers,state);
   const {matches,items,pages,from,to}=result;state.page=result.page;
-  $('#result-count').textContent=`${matches.length} ${matches.length===1?'paper':'papers'}${state.category==='All papers'?'':' · '+state.category}`;
+  $('#result-count').textContent=`${matches.length} ${matches.length===1?'paper':'papers'}${state.categories.length?' · '+state.categories.join(state.match==='all'?' + ':' / '):''}`;
   $('#result-range').textContent=matches.length?`Showing ${from}–${to} of ${matches.length}`:'No results';
-  $('#category-filters').innerHTML=categories.filter(c=>c==='All papers'||papers.some(p=>p.categories.includes(c))).map(c=>`<button class="filter" data-category="${c}" aria-pressed="${c===state.category}">${c}<span>${c==='All papers'?papers.length:papers.filter(p=>p.categories.includes(c)).length}</span></button>`).join('');
-  document.querySelectorAll('[data-category]').forEach(b=>b.addEventListener('click',()=>browseCategory(b.dataset.category)));
-  const filters=[];
-  if(state.query.trim())filters.push(['query',`Search: ${state.query}`]);
-  if(state.year!=='all')filters.push(['year',`Year: ${state.year}`]);
-  if(state.representative)filters.push(['representative','Evidence-table methods only']);
-  $('#active-filters').innerHTML=filters.length?`<span>Active filters</span>${filters.map(([key,label])=>`<button class="filter-chip" data-remove-filter="${key}" aria-label="Remove ${escapeHtml(label)}">${escapeHtml(label)} ×</button>`).join('')}<button class="text-button" id="clear-active-filters">Clear filters</button>`:'<span>Showing the complete category. Select a category to reset search and filters.</span>';
+  const facetPapers=libraryModel.select(papers,{...state,categories:[]}).matches;
+  $('#category-filters').innerHTML=`<button class="filter" data-all-papers aria-pressed="${!state.categories.length}">All papers<span>${papers.length}</span></button>`+categories.filter(c=>c!=='All papers'&&papers.some(p=>p.categories.includes(c))).map(c=>`<label class="filter filter-tag ${state.categories.includes(c)?'is-selected':''}"><input type="checkbox" data-category="${c}" ${state.categories.includes(c)?'checked':''}><span class="filter-name">${c}</span><span class="facet-count" title="Papers with this tag matching the current search, year, method family and evidence filters">${facetPapers.filter(p=>p.categories.includes(c)).length}</span></label>`).join('');
+  $('[data-all-papers]').addEventListener('click',()=>browseCategory('All papers'));
+  document.querySelectorAll('[data-category]').forEach(input=>input.addEventListener('change',()=>{
+    const category=input.dataset.category;Object.assign(state,libraryModel.toggle(state,category));render();
+    document.querySelector(`[data-category="${category}"]`)?.focus({preventScroll:true});
+  }));
+  const filters=state.categories.map(c=>['category',c,c]);
+  if(state.query.trim())filters.push(['query',`Search: ${state.query}`,'']);
+  if(state.year!=='all')filters.push(['year',`Year: ${state.year}`,'']);
+  if(state.subfamily!=='all')filters.push(['subfamily',state.subfamily,'']);
+  if(state.representative)filters.push(['representative','Evidence-table methods only','']);
+  $('#active-filters').innerHTML=filters.length?`<span>${state.categories.length>1?(state.match==='all'?'All selected tags':'Any selected tag'):'Active filters'}</span>${filters.map(([key,label,value])=>`<button class="filter-chip" data-remove-filter="${key}" data-filter-value="${escapeHtml(value)}" aria-label="Remove ${escapeHtml(label)}">${escapeHtml(label)} ×</button>`).join('')}<button class="text-button" id="clear-active-filters">Clear all</button>`:'<span>No filters applied · 256 papers in the collection.</span>';
   document.querySelectorAll('[data-remove-filter]').forEach(b=>b.addEventListener('click',()=>{
-    const key=b.dataset.removeFilter;state[key]=key==='year'?'all':key==='representative'?false:'';
+    const key=b.dataset.removeFilter;
+    if(key==='category')state.categories=state.categories.filter(c=>c!==b.dataset.filterValue);
+    else state[key]=['year','subfamily'].includes(key)?'all':key==='representative'?false:'';
     state.page=1;syncLibraryControls();render();
   }));
-  $('#clear-active-filters')?.addEventListener('click',()=>browseCategory(state.category));
+  $('#clear-active-filters')?.addEventListener('click',()=>browseCategory('All papers'));
   $('#paper-list').innerHTML=items.map(p=>{
     const authors=p.authors.split(' and ');
     const authorText=authors.length>5?authors.slice(0,5).join(', ')+', et al.':authors.join(', ');
     const url=safeUrl(p.url);
     return `<article class="paper"><div><h3>${url?`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a>`:escapeHtml(p.title)}</h3><p class="paper-authors">${escapeHtml(authorText)}</p><div class="paper-meta"><span class="paper-year">${p.year||'Undated'}</span>${p.categories.slice(0,4).map(c=>`<span class="tag ${['Topology','Runtime','Optimization'].includes(c)?c.toLowerCase():'other'}">${escapeHtml(c)}</span>`).join('')}${p.evidence?'<span class="tag other">Evidence table</span>':''}</div>${p.evidence?`<details><summary>${escapeHtml(p.method)} · View evidence & limitations</summary><p><strong>Reported effect:</strong> ${escapeHtml(p.evidence.effect)}<br><strong>Update:</strong> ${escapeHtml(p.evidence.update)}<br><strong>Main boundary:</strong> ${escapeHtml(p.evidence.boundary)}<br><strong>Explicitly quantified:</strong> ${p.evidence.quantified.length?escapeHtml(p.evidence.quantified.join('; ')):'None of the four evidence coordinates'}<br>Unlisted coordinates are not established in the survey’s evidence table; this does not mean an effect is absent.</p></details>`:''}</div>${url?`<a class="paper-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="Read ${escapeHtml(p.title)}">↗</a>`:''}</article>`;
-  }).join('')||'<div class="empty">No papers match these filters.<br><button class="compact-button" id="empty-reset">Show all papers in this category</button></div>';
-  $('#empty-reset')?.addEventListener('click',()=>browseCategory(state.category));
+  }).join('')||'<div class="empty">No papers match these filters.<br><button class="compact-button" id="empty-reset">Clear filters and show all papers</button></div>';
+  $('#empty-reset')?.addEventListener('click',()=>browseCategory('All papers'));
   $('#page-info').textContent=`Page ${state.page} of ${pages} · ${from}–${to} of ${matches.length}`;
-  $('#previous').disabled=state.page===1;$('#next').disabled=state.page===pages;
+  for(const id of ['previous','previous-top','first-page'])$('#'+id).disabled=state.page===1;
+  for(const id of ['next','next-top','last-page'])$('#'+id).disabled=state.page===pages;
+  $('#page-jump').innerHTML=Array.from({length:pages},(_,i)=>`<option value="${i+1}" ${state.page===i+1?'selected':''}>${i+1} / ${pages}</option>`).join('');
+  $('#page-jump').disabled=pages===1;
 }
 $('#page-size').addEventListener('change',e=>{state.pageSize=e.target.value;state.page=1;render();});
-$('#search').addEventListener('input',e=>{state.query=e.target.value;state.page=1;render();});$('#year').addEventListener('change',e=>{state.year=e.target.value;state.page=1;render();});$('#sort').addEventListener('change',e=>{state.sort=e.target.value;state.page=1;render();});$('#representative').addEventListener('change',e=>{state.representative=e.target.checked;state.page=1;render();});$('#clear-filters').addEventListener('click',()=>{Object.assign(state,{category:'All papers',query:'',year:'all',representative:false,page:1,sort:'year-desc'});$('#search').value='';$('#year').value='all';$('#representative').checked=false;$('#sort').value='year-desc';render();});for(const [id,delta] of [['previous',-1],['next',1]])$('#'+id).addEventListener('click',()=>{state.page+=delta;render();$('.results-line').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});});document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)&&!document.activeElement.isContentEditable){e.preventDefault();$('#search').focus();}});
+for(const [id,key,event] of [['search','query','input'],['year','year','change'],['sort','sort','change'],['tag-match','match','change'],['subfamily','subfamily','change']]){
+  $('#'+id).addEventListener(event,e=>{state[key]=e.target.value;state.page=1;render();});
+}
+$('#representative').addEventListener('change',e=>{state.representative=e.target.checked;state.page=1;render();});
+$('#clear-filters').addEventListener('click',()=>browseCategory('All papers'));
+function goToPage(page){
+  state.page=page;render();
+  $('.results-line').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
+for(const [id,delta] of [['previous',-1],['next',1],['previous-top',-1],['next-top',1]])$('#'+id).addEventListener('click',()=>goToPage(state.page+delta));
+$('#first-page').addEventListener('click',()=>goToPage(1));
+$('#last-page').addEventListener('click',()=>goToPage(libraryModel.select(papers,state).pages));
+$('#page-jump').addEventListener('change',e=>goToPage(Number(e.target.value)));
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)&&!document.activeElement.isContentEditable){e.preventDefault();$('#search').focus();}});
 const mapgd=papers.find(p=>p.key==='2025_han_mapgd');if(mapgd&&safeUrl(mapgd.url)){$('#mapgd-link').href=mapgd.url;$('#mapgd-link').target='_blank';$('#mapgd-link').rel='noopener noreferrer';}
-const config=window.SITE_CONFIG||{};for(const [id,key]of [['repository-link','repositoryUrl'],['paper-link','paperUrl']])if(safeUrl(config[key])){$('#'+id).href=config[key];$('#'+id).hidden=false;}if(config.paperUrl&&safeUrl(config.paperUrl))$('#publication-status').hidden=true;render();
+const config=window.SITE_CONFIG||{};for(const [id,key]of [['repository-link','repositoryUrl'],['paper-link','paperUrl']])if(safeUrl(config[key])){$('#'+id).href=config[key];$('#'+id).hidden=false;}function publicationUrl(value){
+  if(!value)return null;
+  try{const url=new URL(value,document.baseURI);return ['https:','http:'].includes(url.protocol)?url.href:null;}catch{return null;}
+}
+for(const [id,key] of [['hero-github','repositoryUrl'],['hero-paper','paperUrl'],['hero-pdf','pdfUrl']]){
+  const url=publicationUrl(config[key]);if(!url)continue;
+  const link=$('#'+id);link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.removeAttribute('aria-disabled');link.removeAttribute('title');link.querySelector('small')?.remove();
+}
+render();
