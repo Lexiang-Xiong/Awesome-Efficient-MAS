@@ -20,6 +20,16 @@ National University of Singapore · University of California, Berkeley · The Ho
 
 LLM multi-agent systems broaden search and combine evidence, but introduce repeated inference, growing message histories, and coordination overhead. This survey connects quality gains to their complete resource cost: first identifying the **collaboration boundary**, then organizing methods by **Topology**, **Runtime**, and **Optimization**.
 
+## Interactive homepage
+
+- **Collaboration playground:** drag agents, trace their connections, adjust the link budget, or disable a participant. This diagram is illustrative, not an efficiency benchmark.
+- **Visual atlas:** explore three original manuscript figures through 11 annotated regions. Hover or focus to inspect, select to magnify, and follow related papers.
+- **Figure viewer:** full-screen viewing, zoom, pan, download, and keyboard dismissal.
+- **Evidence lab:** scrub through the five cumulative MASS optimization stages, inspect exact mean scores, and compare with the original figure.
+- **Paper library:** search and filter the 256 cited works, including 29 representative methods with evidence details.
+
+The blue interface supports keyboard navigation and reduced-motion preferences. Figure sources and export bounds are documented in [the asset notes](docs/assets/figures/README.md).
+
 ## At a glance
 
 | Control point | What changes | Method families |
@@ -37,9 +47,9 @@ flowchart LR
   R --> E
   O --> E
   E --> S["Synthesis & open problems"]
-  style T fill:#c7ef83,color:#11171b,stroke:#89a659
-  style R fill:#9ebffa,color:#11171b,stroke:#6c8cbc
-  style O fill:#e8b39b,color:#11171b,stroke:#a77761
+  style T fill:#85baff,color:#070d1c,stroke:#448aff
+  style R fill:#78d6fa,color:#070d1c,stroke:#3c91bc
+  style O fill:#b8bbff,color:#070d1c,stroke:#777bca
 ```
 
 ## Reading guide

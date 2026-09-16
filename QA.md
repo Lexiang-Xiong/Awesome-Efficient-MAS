@@ -2,6 +2,17 @@
 
 Validated locally on 2026-09-16.
 
+## Blue interactive revision
+
+- Added a blue theme, navigation progress, and reduced-motion-aware transitions.
+- The graph supports pointer dragging, keyboard movement, agent inspection, disabling/enabling agents, three presets, and an adjustable communication budget. Budget endpoints return 0 and 21 active links for the complete seven-agent team. Disabling the planner in the sparse preset leaves 7 links; reset restores 9.
+- The three original method figures contain 11 focusable/clickable regions. Region selection reveals the corresponding explanation and related-paper filter. A native dialog provides zoom, pan, download, Escape dismissal, and restored opener focus.
+- MASS stage selection uses exact manuscript values: 63.54, 67.44, 74.56, 77.55, 78.40. The final cumulative gain is 14.86 points. Values are not interpolated into fabricated experiments.
+- Checked desktop and mobile layouts, including mobile viewer sizing, keyboard range input, stage clicks, region focus, and dialog focus return. No horizontal overflow or browser console errors were observed in those checks.
+- Original figure artwork is retained, with only PDF page whitespace removed during export. Source files and bounds are documented with the image assets.
+
+## Original collection validation
+
 - The importer resolved all active manuscript citation keys: 256 unique works from 272 bibliography entries. Uncited entries are not counted in the website collection.
 - All 29 representative methods were extracted from the manuscript evidence table, including primary family, reported effect, update timing, evidence coverage, and main boundary.
 - JSON and browser JavaScript datasets agree. The downloadable BibTeX contains the same 256 cited keys.

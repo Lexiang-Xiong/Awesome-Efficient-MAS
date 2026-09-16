@@ -15,4 +15,6 @@ Section tags describe citation placement; the representative-method table preser
 
 For website changes, keep relative asset paths so the site works under a GitHub project subpath. Check keyboard navigation, search, filters, empty results, pagination, and mobile layout. Respect reduced-motion preferences and retain the explicit distinction between illustrative graphs and measured evidence.
 
+Interactive behavior is in `docs/interactions.js`, with the blue visual system in `docs/interactions.css`. Graph controls must report actual active connections and never imply a measured quality gain. Figure hotspot geometry must be checked against the exported assets. MASS values must remain tied to the survey's ordered, cumulative optimization stages. All hover explanations must remain accessible through focus or tap; full-screen viewers must support Escape and return focus to the opener.
+
 Author information and publication links must be confirmed before updating. Do not add guessed arXiv identifiers, GitHub repository URLs, or licensing terms.
