@@ -63,6 +63,14 @@ def validate():
         assert (DOCS / "assets/figures" / (name + ".png")).is_file(), f"Missing figure: {name}"
         if name != "optimization_results_b":
             assert (DOCS / "assets/figures" / (name + ".webp")).is_file(), f"Missing lossless web figure: {name}"
+            for width in [1200, 2400, 4800]:
+                assert (DOCS / "assets/figures" / f"{name}-{width}.webp").is_file(), f"Missing display variant: {name}-{width}"
+    configured_pdf = re.search(r"pdfUrl:\s*'([^']+)'", (DOCS / "data/site.js").read_text(encoding="utf-8"))
+    if configured_pdf and not urlparse(configured_pdf.group(1)).scheme:
+        pdf_path = (DOCS / configured_pdf.group(1)).resolve()
+        assert pdf_path.is_relative_to(DOCS.resolve()) and pdf_path.is_file(), "Missing local survey PDF"
+        with pdf_path.open('rb') as file:
+            assert file.read(5) == b'%PDF-', "Survey PDF has an invalid header"
     for value in ["63.54", "67.44", "74.56", "77.55", "78.40"]:
         assert value in interaction_source, f"Missing MASS stage: {value}"
     assert "BadWAM" not in html and "BadWAM" not in (DOCS / "data/site.js").read_text(encoding="utf-8")

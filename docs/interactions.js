@@ -145,6 +145,25 @@ const atlasCrops={
     {bounds:[842,225,863,233],outline:'842,225 1705,225 1705,458 855,458 855,382 842,382'}
   ]}
 };
+// Keep decoded display rasters resident; full-resolution PNGs are only opened
+// by the full-screen viewer. Crops first reuse the already-visible overview.
+const atlasRasterCache=new Map();
+function atlasRasterSource(layer,region=null){
+  const width=$('.atlas-paper')?.getBoundingClientRect().width||Math.max(300,innerWidth*.89-330);
+  const crop=atlasCrops[layer];
+  const magnification=region===null?1:crop.size[0]/crop.panels[region].bounds[2];
+  const required=Math.max(matchMedia('(max-width:760px)').matches?1200:2400,width*devicePixelRatio*magnification);
+  const size=[1200,2400,4800].find(size=>size>=required)||4800;
+  return `assets/figures/${atlasFigures[layer].file}-${size}.webp`;
+}
+function warmAtlasRaster(src){
+  if(atlasRasterCache.has(src))return atlasRasterCache.get(src).promise;
+  const image=new Image();image.decoding='async';
+  const entry={image,ready:false};atlasRasterCache.set(src,entry);
+  image.src=src;
+  entry.promise=image.decode().then(()=>{entry.ready=true;return true;}).catch(()=>{atlasRasterCache.delete(src);return false;});
+  return entry.promise;
+}
 function updateAtlasCrop(){
   const figure=atlasFigures[atlasLayer],crop=atlasCrops[atlasLayer];
   const {bounds,outline}=crop.panels[atlasRegion];
@@ -155,7 +174,13 @@ function updateAtlasCrop(){
   const clip=svgElement('clipPath',{id:'atlas-crop-clip',clipPathUnits:'userSpaceOnUse'});
   clip.append(outline?svgElement('polygon',{points:outline}):svgElement('rect',{x:bounds[0],y:bounds[1],width:bounds[2],height:bounds[3]}));
   const defs=svgElement('defs',{});defs.append(clip);
-  svg.replaceChildren(defs,svgElement('image',{href:`assets/figures/${figure.file}.webp?v=20260917-hd`,width:crop.size[0],height:crop.size[1],'clip-path':'url(#atlas-crop-clip)'}));
+  const overview=atlasRasterSource(atlasLayer),detail=atlasRasterSource(atlasLayer,atlasFocused?atlasRegion:null);
+  const raster=svgElement('image',{href:atlasRasterCache.get(detail)?.ready?detail:overview,width:crop.size[0],height:crop.size[1],'clip-path':'url(#atlas-crop-clip)'});
+  svg.replaceChildren(defs,raster);
+  warmAtlasRaster(detail).then(ready=>{
+    // Ignore completions for a region or category that the reader has left.
+    if(ready&&svg.isConnected&&raster.parentNode===svg)raster.setAttribute('href',detail);
+  });
   $('#region-restore').setAttribute('aria-label',`Restore complete ${atlasLayer.toLowerCase()} figure`);
   $('#atlas-caption').textContent=atlasFocused?`${figure.regions[atlasRegion].name} · click image to restore`:'Hover to inspect · click to focus';
 }
@@ -186,6 +211,11 @@ function stabilizeAtlasText(){
   });
   probe.remove();
   ['title','description','examples'].forEach((name,i)=>info.style.setProperty(`--atlas-${name}-height`,Math.ceil(heights[i])+'px'));
+  const overview=$('.figure-stage > img'),src=atlasRasterSource(atlasLayer);
+  if(overview&&overview.getAttribute('src')!==src){
+    warmAtlasRaster(src).then(ready=>{if(ready&&overview.isConnected)overview.src=src;});
+  }
+  if($('#region-image'))updateAtlasCrop();
 }
 function revealAtlasFocus(){
   cancelAnimationFrame(atlasFocusFrame);
@@ -213,7 +243,7 @@ function renderAtlas(layer){
   });
   document.querySelectorAll('[data-layer]').forEach(b=>b.setAttribute('aria-controls','figure-atlas'));
   $('#figure-atlas').setAttribute('role','tabpanel');$('#figure-atlas').setAttribute('aria-labelledby','tab-'+layer.toLowerCase());$('#figure-atlas').tabIndex=0;
-  $('#figure-atlas').innerHTML=`<div class="atlas-shell"><div class="atlas-toolbar"><span>FIGURE EXPLORER / ${layer.toUpperCase()}</span><button id="open-atlas" class="compact-button">Open full screen ⤢</button></div><div class="atlas-body"><div class="atlas-paper"><div class="figure-stage" style="--figure-ratio:${figure.ratio}"><img src="assets/figures/${figure.file}.webp?v=20260917-hd" alt="Original manuscript figure: ${layer} methods" loading="lazy" decoding="async">${figure.regions.map((r,i)=>`<button class="figure-hotspot" data-region="${i}" aria-label="Inspect ${r.name}" style="--x:${r.box[0]}%;--y:${r.box[1]}%;--w:${r.box[2]}%;--h:${r.box[3]}%"><span>${i+1}</span></button>`).join('')}</div><p class="figure-caption"><span>Original figure · ${layer}</span><span>Hover / focus / select</span></p></div><div class="atlas-info"><span class="atlas-step" id="atlas-step"></span><h3 id="atlas-title"></h3><p id="atlas-explanation"></p><div class="atlas-examples" id="atlas-examples"></div><button id="focus-region" class="compact-button">Focus this panel ⤢</button><a id="atlas-papers" href="#library">Related papers →</a></div></div><div class="atlas-regions" role="group" aria-label="Figure regions">${figure.regions.map((r,i)=>`<button class="atlas-region" data-region-choice="${i}" aria-pressed="${i===0}">${String(i+1).padStart(2,'0')} ${r.name}</button>`).join('')}</div></div><p class="atlas-description">${layers[layer].description}</p>`;
+  $('#figure-atlas').innerHTML=`<div class="atlas-shell"><div class="atlas-toolbar"><span>FIGURE EXPLORER / ${layer.toUpperCase()}</span><button id="open-atlas" class="compact-button">Open full screen ⤢</button></div><div class="atlas-body"><div class="atlas-paper"><div class="figure-stage" style="--figure-ratio:${figure.ratio}"><img src="${atlasRasterSource(layer)}" alt="Original manuscript figure: ${layer} methods" decoding="async">${figure.regions.map((r,i)=>`<button class="figure-hotspot" data-region="${i}" aria-label="Inspect ${r.name}" style="--x:${r.box[0]}%;--y:${r.box[1]}%;--w:${r.box[2]}%;--h:${r.box[3]}%"><span>${i+1}</span></button>`).join('')}</div><p class="figure-caption"><span>Original figure · ${layer}</span><span>Hover / focus / select</span></p></div><div class="atlas-info"><span class="atlas-step" id="atlas-step"></span><h3 id="atlas-title"></h3><p id="atlas-explanation"></p><div class="atlas-examples" id="atlas-examples"></div><button id="focus-region" class="compact-button">Focus this panel ⤢</button><a id="atlas-papers" href="#library">Related papers →</a></div></div><div class="atlas-regions" role="group" aria-label="Figure regions">${figure.regions.map((r,i)=>`<button class="atlas-region" data-region-choice="${i}" aria-pressed="${i===0}">${String(i+1).padStart(2,'0')} ${r.name}</button>`).join('')}</div></div><p class="atlas-description">${layers[layer].description}</p>`;
   const visual=document.createElement('div');visual.className='atlas-visuals';
   $('.figure-stage').before(visual);visual.append($('.figure-stage'));
   if(literatureMount)visual.append(literatureMount);
@@ -302,8 +332,28 @@ function setAtlasFocus(focus){
   if(!focus){cancelAnimationFrame(atlasFocusFrame);$('.atlas-shell').classList.remove('focus-arriving');}
 }
 const baseShowLayer=showLayer;
-showLayer=layer=>{baseShowLayer(layer);renderAtlas(layer);};
+let atlasNavigation=0;
+showLayer=layer=>{
+  const request=++atlasNavigation,src=atlasRasterSource(layer);
+  const display=()=>{
+    if(request!==atlasNavigation)return;
+    baseShowLayer(layer);renderAtlas(layer);$('#figure-atlas').removeAttribute('aria-busy');
+  };
+  if(atlasRasterCache.get(src)?.ready)display();
+  else{$('#figure-atlas').setAttribute('aria-busy','true');warmAtlasRaster(src).then(display);}
+};
 renderAtlas('Topology');
+document.querySelectorAll('.taxonomy-tabs [data-layer]').forEach(button=>{
+  const prepare=()=>warmAtlasRaster(atlasRasterSource(button.dataset.layer));
+  button.addEventListener('pointerenter',prepare,{passive:true});button.addEventListener('focus',prepare);
+});
+const atlasPreloader=new IntersectionObserver(entries=>{
+  if(!entries.some(entry=>entry.isIntersecting))return;
+  // Decode one at a time rather than competing for CPU with an active image.
+  Object.keys(atlasFigures).reduce((pending,layer)=>pending.then(()=>warmAtlasRaster(atlasRasterSource(layer))),Promise.resolve());
+  atlasPreloader.disconnect();
+},{rootMargin:'600px'});
+atlasPreloader.observe($('#figure-atlas'));
 document.fonts.ready.then(stabilizeAtlasText);
 
 // Copy exactly the citation displayed on the page, including on file:// previews.

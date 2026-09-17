@@ -3,5 +3,5 @@
 window.SITE_CONFIG = {
   repositoryUrl: 'https://github.com/Lexiang-Xiong/Awesome-Efficient-MAS',
   paperUrl: '',
-  pdfUrl: ''
+  pdfUrl: 'assets/Efficiency_LLM_MAS_Survey.pdf'
 };

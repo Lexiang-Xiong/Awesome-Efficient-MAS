@@ -1,6 +1,6 @@
 # Manuscript figures
 
-The three method overviews now use the author's 15360 × 8640 JPEG exports supplied on 2026-09-17. Page whitespace is cropped without resampling. Extra black dashed separator rules in Topology were precisely masked in the white gutters, with the author's approval; all pixels outside those masks are unchanged. Text, arrows, colors, and diagram content are retained. PNGs preserve the cropped pixels; the webpage uses pixel-identical lossless WebP copies. Full-screen viewing and downloads use the PNGs.
+The three method overviews now use the author's 15360 × 8640 JPEG exports supplied on 2026-09-17. Page whitespace is cropped without resampling. Extra black dashed separator rules in Topology were precisely masked in the white gutters, with the author's approval; all pixels outside those masks are unchanged. Text, arrows, colors, and diagram content are retained. Native PNGs and lossless WebP copies preserve the cropped pixels. Full-screen viewing and downloads use the PNGs; ordinary browsing uses the smaller display copies described below.
 
 | Current asset | Native cropped dimensions |
 | --- | --- |
@@ -9,6 +9,8 @@ The three method overviews now use the author's 15360 × 8640 JPEG exports suppl
 | optimization_figure.png / .webp | 12787 × 3434 |
 
 `scripts/prepare_author_figures.py` records the crop and mask coordinates and verifies pixel preservation outside the masks and in the WebP copies. Its inputs are the three original JPEGs in Topology, Runtime, Optimization order. Interactive clipping bounds use the new artwork's logical coordinates in `docs/interactions.js`.
+
+For browsing, `scripts/build_figure_previews.py` derives 1200, 2400 and 4800 pixel-wide lossless WebP display copies from the retained PNGs using Lanczos downsampling. The atlas chooses a size for the screen density and crop magnification, preloads neighboring categories, and upgrades focused crops after decoding. These display copies are resampled; they are not pixel-identical to the native originals. Full-screen viewing and downloads retain the original PNG resolution.
 
 The older PDF export bounds below are retained for provenance; the MASS chart still uses its original PDF export.
 
