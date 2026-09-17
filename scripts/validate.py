@@ -54,12 +54,15 @@ def validate():
             assert target.is_relative_to(DOCS.resolve()) and target.is_file(), f"Missing local asset: {ref}"
         elif parsed.fragment:
             assert parsed.fragment in doc.ids, f"Broken anchor: {ref}"
-    for file in ["app.js", "interactions.js", "library-model.js", "data/site.js", "data/papers.js"]:
+    for file in ["app.js", "interactions.js", "library-model.js", "research-map-model.js", "research-explorer.js", "focus-literature.js", "data/site.js", "data/papers.js"]:
         subprocess.run(["node", "--check", str(DOCS / file)], check=True)
     subprocess.run(["node", str(ROOT / "scripts/test_library.cjs")], check=True)
+    subprocess.run(["node", str(ROOT / "scripts/test_research_map.cjs")], check=True)
     interaction_source = (DOCS / "interactions.js").read_text(encoding="utf-8")
     for name in ["pruning_figure", "runtime_overview_figure", "optimization_figure", "optimization_results_b"]:
         assert (DOCS / "assets/figures" / (name + ".png")).is_file(), f"Missing figure: {name}"
+        if name != "optimization_results_b":
+            assert (DOCS / "assets/figures" / (name + ".webp")).is_file(), f"Missing lossless web figure: {name}"
     for value in ["63.54", "67.44", "74.56", "77.55", "78.40"]:
         assert value in interaction_source, f"Missing MASS stage: {value}"
     assert "BadWAM" not in html and "BadWAM" not in (DOCS / "data/site.js").read_text(encoding="utf-8")

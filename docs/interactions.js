@@ -107,18 +107,18 @@ paintGraph();
 
 // Original manuscript figures, with keyboard- and touch-accessible annotations.
 const atlasFigures={
-  Topology:{file:'pruning_figure',ratio:'1140 / 405',source:'figures/generated/pruning_figure.pdf',
+  Topology:{file:'pruning_figure',ratio:'1267 / 427',source:'Author-supplied high-resolution artwork',
     regions:[
       {name:'Pruning',search:'Topology Pruning',box:[0,0,66,49],description:'Remove redundant agents or communication links from an existing topology. The intervention changes which paths remain available.',examples:'AgentPrune · AgentDropout'},
       {name:'Construction',search:'Topology Construction',box:[0,50,66,49],description:'Select roles and construct a task-specific graph. The goal is useful coordination, rather than simply the smallest possible team.',examples:'G-Designer · GTD · HiVA'},
       {name:'Adaptation',search:'Topology Adaptation',box:[67,0,32,99],description:'Revise the collaboration structure from intermediate feedback or transferred priors as the task evolves.',examples:'TopoPrior · TacoMAS · MasFACT'}]},
-  Runtime:{file:'runtime_overview_figure',ratio:'1500 / 400',source:'figures/generated/runtime_overview_figure.pdf',
+  Runtime:{file:'runtime_overview_figure',ratio:'1670 / 433',source:'Author-supplied high-resolution artwork',
     regions:[
       {name:'Communication',search:'Communication',box:[0,0,49,48],description:'Select and compress exchanged content. Shorter messages save resources only if the information needed for the task survives.',examples:'S2-MAD · EcoLANG · DebateOCR'},
       {name:'Routing',search:'Routing',box:[50,0,49,48],description:'Choose the next model, agent, or context view according to the current execution state and quality requirement.',examples:'CASTER · RCR-Router · Smurfs'},
       {name:'State',search:'State',box:[0,49,49,50],description:'Reuse memory and model cache instead of reconstructing the same execution state. Logical decisions and serving work are distinct costs.',examples:'TokenDance · KVCOMM'},
       {name:'Scheduling',search:'Scheduling',box:[50,49,49,50],description:'Turn dependencies into an execution plan. Concurrency, deferral, and recovery determine latency and capacity.',examples:'Act-or-Defer · AgentRadio'}]},
-  Optimization:{file:'optimization_figure',ratio:'1500 / 425',source:'figures/generated/optimization_figure.pdf',
+  Optimization:{file:'optimization_figure',ratio:'1705 / 458',source:'Author-supplied high-resolution artwork',
     regions:[
       {name:'Prompt optimization',search:'Prompt Optimization',box:[0,0,49,48],description:'Refine coupled agent instructions using system-level feedback. Improving a local prompt need not improve the whole workflow.',examples:'MAPGD · MAPRO · MASPO'},
       {name:'Workflow search',search:'Workflow Search',box:[50,0,49,48],description:'Search executable collaboration programs. The deployed workflow must repay the cost of generating and evaluating its candidates.',examples:'MASS · AFlow · MetaAgent'},
@@ -126,21 +126,23 @@ const atlasFigures={
       {name:'Continual learning',search:'Continual Learning',box:[50,51,49,48],description:'Convert accumulated experience into skills or procedures that improve future requests. Reuse and maintenance determine lifecycle efficiency.',examples:'MetaTeam · SkillGraph · G-Memory'}]}
 };
 let atlasLayer='Topology';let atlasRegion=0;let atlasFocused=false;
-// Pixel bounds in the original PNGs. The topology feedback label extends into
-// the gutter, so its outline is shared by the two adjacent clipping paths.
+// Logical coordinates in the cropped author artwork (native images are 7.5x).
+// The topology feedback label extends into the neighboring gutter.
 const atlasCrops={
-  Topology:{size:[1140,405],panels:[
-    {bounds:[0,0,770,200]},
-    {bounds:[0,210,770,195],outline:'0,210 770,210 770,230 700,230 700,290 770,290 770,405 0,405'},
-    {bounds:[700,0,440,405],hotspot:[770,0,370,405],outline:'770,0 1140,0 1140,405 770,405 770,290 700,290 700,230 770,230'}
+  Topology:{size:[1267,427],panels:[
+    {bounds:[0,0,869,209]},
+    {bounds:[0,209,869,218],outline:'0,209 779,209 779,338 863,338 863,427 0,427'},
+    {bounds:[779,0,488,427],hotspot:[869,0,398,427],outline:'869,0 1267,0 1267,427 863,427 863,338 779,338 779,209 869,209'}
   ]},
-  Runtime:{size:[1500,400],panels:[
-    {bounds:[0,0,745,190]},{bounds:[745,0,755,190]},
-    {bounds:[0,190,745,210]},{bounds:[745,190,755,210]}
+  Runtime:{size:[1670,433],panels:[
+    {bounds:[0,0,835,210]},{bounds:[835,0,835,210]},
+    {bounds:[0,210,835,223]},{bounds:[835,210,835,223]}
   ]},
-  Optimization:{size:[1500,425],panels:[
-    {bounds:[0,0,750,207]},{bounds:[750,0,750,207]},
-    {bounds:[0,207,750,218]},{bounds:[750,207,750,218]}
+  Optimization:{size:[1705,458],panels:[
+    {bounds:[0,0,855,225],outline:'0,0 842,0 842,150 855,150 855,225 0,225'},
+    {bounds:[842,0,863,225],outline:'842,0 1705,0 1705,225 855,225 855,150 842,150'},
+    {bounds:[0,225,855,233],outline:'0,225 842,225 842,382 855,382 855,458 0,458'},
+    {bounds:[842,225,863,233],outline:'842,225 1705,225 1705,458 855,458 855,382 842,382'}
   ]}
 };
 function updateAtlasCrop(){
@@ -153,11 +155,56 @@ function updateAtlasCrop(){
   const clip=svgElement('clipPath',{id:'atlas-crop-clip',clipPathUnits:'userSpaceOnUse'});
   clip.append(outline?svgElement('polygon',{points:outline}):svgElement('rect',{x:bounds[0],y:bounds[1],width:bounds[2],height:bounds[3]}));
   const defs=svgElement('defs',{});defs.append(clip);
-  svg.replaceChildren(defs,svgElement('image',{href:`assets/figures/${figure.file}.png`,width:crop.size[0],height:crop.size[1],'clip-path':'url(#atlas-crop-clip)'}));
+  svg.replaceChildren(defs,svgElement('image',{href:`assets/figures/${figure.file}.webp?v=20260917-hd`,width:crop.size[0],height:crop.size[1],'clip-path':'url(#atlas-crop-clip)'}));
   $('#region-restore').setAttribute('aria-label',`Restore complete ${atlasLayer.toLowerCase()} figure`);
-  $('#atlas-caption').textContent=atlasFocused?`${figure.regions[atlasRegion].name} · click image to restore`:'Hover to explore · click a region to enlarge';
+  $('#atlas-caption').textContent=atlasFocused?`${figure.regions[atlasRegion].name} · click image to restore`:'Hover to inspect · click to focus';
+}
+let atlasSizeObserver;
+let atlasFocusFrame;
+function stabilizeAtlasText(){
+  const info=$('.atlas-info');
+  if(!info)return;
+  const paper=$('.atlas-paper'),size=atlasCrops[atlasLayer].size;
+  // Reserve the actual overview height, not a large fixed-height canvas.
+  // This stays constant between regions and between figure/literature views.
+  const imageHeight=paper.getBoundingClientRect().width*size[1]/size[0];
+  paper.style.setProperty('--atlas-image-height',Math.ceil(Math.max(matchMedia('(max-width:760px)').matches?180:0,imageHeight))+'px');
+  // Measure every sibling description at the actual responsive width. Reserve
+  // those heights without clipping text or guessing a fixed line count.
+  const probe=info.cloneNode(true);
+  probe.classList.add('atlas-measure');probe.classList.remove('is-changing');
+  probe.setAttribute('aria-hidden','true');probe.inert=true;
+  probe.style.width=info.getBoundingClientRect().width+'px';
+  probe.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+  const targets=[probe.querySelector('h3'),probe.querySelector('p'),probe.querySelector('.atlas-examples')];
+  targets.forEach(el=>{el.style.minHeight='0';el.style.height='auto';});
+  info.parentElement.append(probe);
+  const heights=[0,0,0];
+  atlasFigures[atlasLayer].regions.forEach(region=>{
+    [region.name,region.description,region.examples].forEach((value,i)=>{targets[i].textContent=value;});
+    targets.forEach((el,i)=>{heights[i]=Math.max(heights[i],el.getBoundingClientRect().height);});
+  });
+  probe.remove();
+  ['title','description','examples'].forEach((name,i)=>info.style.setProperty(`--atlas-${name}-height`,Math.ceil(heights[i])+'px'));
+}
+function revealAtlasFocus(){
+  cancelAnimationFrame(atlasFocusFrame);
+  atlasFocusFrame=requestAnimationFrame(()=>{
+    const shell=$('.atlas-shell');
+    if(!atlasFocused)return;
+    // A quiet border cue signals the mode change without moving the viewport.
+    if(!reducedMotion.matches){
+      shell.classList.add('focus-arriving');
+      const finish=e=>{if(e.target!==shell)return;shell.classList.remove('focus-arriving');shell.removeEventListener('animationend',finish);};
+      shell.addEventListener('animationend',finish);
+    }
+  });
 }
 function renderAtlas(layer){
+  atlasSizeObserver?.disconnect();cancelAnimationFrame(atlasFocusFrame);
+  // Keep the literature mount (and its controller) when rebuilding the atlas.
+  const literatureMount=$('#research-map');
+  literatureMount?.remove();
   atlasLayer=layer;atlasRegion=0;atlasFocused=false;const figure=atlasFigures[layer];
   const crops=atlasCrops[layer];
   figure.regions.forEach((r,i)=>{
@@ -166,7 +213,28 @@ function renderAtlas(layer){
   });
   document.querySelectorAll('[data-layer]').forEach(b=>b.setAttribute('aria-controls','figure-atlas'));
   $('#figure-atlas').setAttribute('role','tabpanel');$('#figure-atlas').setAttribute('aria-labelledby','tab-'+layer.toLowerCase());$('#figure-atlas').tabIndex=0;
-  $('#figure-atlas').innerHTML=`<div class="atlas-shell"><div class="atlas-toolbar"><span>FIGURE EXPLORER / ${layer.toUpperCase()}</span><button id="open-atlas" class="compact-button">Open full screen ⤢</button></div><div class="atlas-body"><div class="atlas-paper"><div class="figure-stage" style="--figure-ratio:${figure.ratio}"><img src="assets/figures/${figure.file}.png" alt="Original manuscript figure: ${layer} methods" loading="lazy" decoding="async">${figure.regions.map((r,i)=>`<button class="figure-hotspot" data-region="${i}" aria-label="Inspect ${r.name}" style="--x:${r.box[0]}%;--y:${r.box[1]}%;--w:${r.box[2]}%;--h:${r.box[3]}%"><span>${i+1}</span></button>`).join('')}</div><p class="figure-caption"><span>Original figure · ${layer}</span><span>Hover / focus / select</span></p></div><div class="atlas-info"><span class="atlas-step" id="atlas-step"></span><h3 id="atlas-title"></h3><p id="atlas-explanation"></p><div class="atlas-examples" id="atlas-examples"></div><button id="focus-region" class="compact-button">Focus this panel ⤢</button><a id="atlas-papers" href="#library">Related papers →</a></div></div><div class="atlas-regions" role="group" aria-label="Figure regions">${figure.regions.map((r,i)=>`<button class="atlas-region" data-region-choice="${i}" aria-pressed="${i===0}">${String(i+1).padStart(2,'0')} ${r.name}</button>`).join('')}</div></div><p class="atlas-description">${layers[layer].description}</p>`;
+  $('#figure-atlas').innerHTML=`<div class="atlas-shell"><div class="atlas-toolbar"><span>FIGURE EXPLORER / ${layer.toUpperCase()}</span><button id="open-atlas" class="compact-button">Open full screen ⤢</button></div><div class="atlas-body"><div class="atlas-paper"><div class="figure-stage" style="--figure-ratio:${figure.ratio}"><img src="assets/figures/${figure.file}.webp?v=20260917-hd" alt="Original manuscript figure: ${layer} methods" loading="lazy" decoding="async">${figure.regions.map((r,i)=>`<button class="figure-hotspot" data-region="${i}" aria-label="Inspect ${r.name}" style="--x:${r.box[0]}%;--y:${r.box[1]}%;--w:${r.box[2]}%;--h:${r.box[3]}%"><span>${i+1}</span></button>`).join('')}</div><p class="figure-caption"><span>Original figure · ${layer}</span><span>Hover / focus / select</span></p></div><div class="atlas-info"><span class="atlas-step" id="atlas-step"></span><h3 id="atlas-title"></h3><p id="atlas-explanation"></p><div class="atlas-examples" id="atlas-examples"></div><button id="focus-region" class="compact-button">Focus this panel ⤢</button><a id="atlas-papers" href="#library">Related papers →</a></div></div><div class="atlas-regions" role="group" aria-label="Figure regions">${figure.regions.map((r,i)=>`<button class="atlas-region" data-region-choice="${i}" aria-pressed="${i===0}">${String(i+1).padStart(2,'0')} ${r.name}</button>`).join('')}</div></div><p class="atlas-description">${layers[layer].description}</p>`;
+  const visual=document.createElement('div');visual.className='atlas-visuals';
+  $('.figure-stage').before(visual);visual.append($('.figure-stage'));
+  if(literatureMount)visual.append(literatureMount);
+  const views=document.createElement('div');views.className='focus-views';views.hidden=true;
+  views.setAttribute('role','tablist');views.setAttribute('aria-label','Focused region views');
+  views.innerHTML='<button id="focus-image-tab" role="tab" aria-selected="true" aria-controls="focus-image-panel">Figure detail</button><button id="focus-literature-tab" role="tab" aria-selected="false" aria-controls="research-map" tabindex="-1">Related literature <span id="focus-paper-count"></span> ↗</button>';
+  $('.figure-caption').after(views);
+  $('.figure-stage').id='focus-image-panel';
+  const discovery=document.createElement('div');discovery.className='focus-discovery-slot';
+  discovery.innerHTML='<span class="focus-discovery-hint">Focus a region to explore its related literature.</span><button id="focus-discovery" hidden aria-label="Explore related literature"></button>';
+  $('#atlas-examples').after(discovery);
+  // Examples and the research entry share one compact slot, so focusing does
+  // not add another tall block or leave an empty placeholder in overview mode.
+  const context=document.createElement('div');context.className='atlas-context';
+  $('#atlas-examples').before(context);context.append($('#atlas-examples'),discovery);
+  const actions=document.createElement('div');actions.className='atlas-actions';
+  $('#focus-region').before(actions);actions.append($('#focus-region'),$('#atlas-papers'));
+  const inspector=document.createElement('aside');inspector.id='focus-paper-detail';inspector.hidden=true;
+  $('.atlas-info').append(inspector);
+  $('.atlas-shell').dataset.atlasLayer=layer;
+  $('.atlas-shell').style.setProperty('--focus-frame-ratio',Math.min(...crops.panels.map(p=>p.bounds[2]/p.bounds[3])));
   const restore=document.createElement('button');
   restore.id='region-restore';restore.className='region-restore';restore.hidden=true;
   restore.append(svgElement('svg',{id:'region-image',role:'img',preserveAspectRatio:'xMidYMid meet'}));
@@ -181,13 +249,24 @@ function renderAtlas(layer){
   });
   document.querySelectorAll('[data-region-choice]').forEach(b=>b.addEventListener('click',()=>{setAtlasRegion(Number(b.dataset.regionChoice));}));
   $('#focus-region').addEventListener('click',()=>setAtlasFocus(!atlasFocused));
-  $('#open-atlas').addEventListener('click',()=>openFigure(`assets/figures/${figure.file}.png`,`${layer} · original figure`,`${layers[layer].description} Source: ${figure.source}. Original artwork is unchanged; page whitespace is cropped.`));
+  $('#focus-region').textContent='Focus & explore papers ⤢';
+  $('#focus-region').setAttribute('aria-expanded','false');
+  $('#focus-region').setAttribute('aria-controls','research-map');
+  $('#open-atlas').addEventListener('click',()=>openFigure(`assets/figures/${figure.file}.png?v=20260917-hd`,`${layer} · original figure`,`${layers[layer].description} Source: ${figure.source}. Page whitespace is cropped. Extra separator rules in the topology image were removed; diagram artwork is retained.`));
   $('#atlas-papers').addEventListener('click',()=>{
     const query=figure.regions[atlasRegion].search;
     Object.assign(state,libraryModel.browse(state,layer),{query});syncLibraryControls();
     $('#search').value=query;$('#year').value='all';$('#representative').checked=false;render();
   });
   setAtlasRegion(0);
+  stabilizeAtlasText();
+  let measuredWidth=$('.atlas-paper').getBoundingClientRect().width;
+  atlasSizeObserver=new ResizeObserver(()=>{
+    const width=$('.atlas-paper').getBoundingClientRect().width;
+    if(Math.abs(width-measuredWidth)>.5){measuredWidth=width;stabilizeAtlasText();}
+  });
+  atlasSizeObserver.observe($('.atlas-info'));
+  atlasSizeObserver.observe($('.atlas-paper'));
 }
 function setAtlasRegion(index){
   atlasRegion=index;const f=atlasFigures[atlasLayer], r=f.regions[index];
@@ -198,21 +277,34 @@ function setAtlasRegion(index){
   document.querySelectorAll('.figure-hotspot').forEach(b=>b.classList.toggle('is-active',Number(b.dataset.region)===index));
   updateAtlasCrop();
   const info=$('.atlas-info');info.classList.remove('is-changing');requestAnimationFrame(()=>info.classList.add('is-changing'));
+  publishAtlasState();
+}
+function publishAtlasState(){
+  const r=atlasFigures[atlasLayer].regions[atlasRegion];
+  $('.atlas-shell').classList.toggle('is-focused',atlasFocused);
+  $('.atlas-toolbar > span').textContent=atlasFocused?`FOCUS MODE / ${atlasLayer.toUpperCase()} / ${r.name.toUpperCase()}`:`FIGURE EXPLORER / ${atlasLayer.toUpperCase()}`;
+  document.dispatchEvent(new CustomEvent('atlas-region-change',{detail:{layer:atlasLayer,family:`${atlasLayer} / ${r.search}`,focused:atlasFocused}}));
 }
 function setAtlasFocus(focus){
+  const entering=focus&&!atlasFocused;
   atlasFocused=focus;$('.figure-stage').classList.toggle('is-focused',focus);
   $('.figure-stage > img').hidden=focus;
   $('#region-restore').hidden=!focus;
   document.querySelectorAll('.figure-hotspot').forEach(b=>{b.tabIndex=focus?-1:0;b.inert=focus;});
-  $('#focus-region').textContent=focus?'Show complete figure ↙':'Focus this panel ⤢';
+  $('#focus-region').textContent=focus?'Exit focus ↙':'Focus & explore papers ⤢';
   $('#focus-region').setAttribute('aria-pressed',String(focus));
+  $('#focus-region').setAttribute('aria-expanded',String(focus));
   updateAtlasCrop();
+  publishAtlasState();
   if(focus)$('#region-restore').focus({preventScroll:true});
   else document.querySelector(`.figure-hotspot[data-region="${atlasRegion}"]`).focus({preventScroll:true});
+  if(entering)revealAtlasFocus();
+  if(!focus){cancelAnimationFrame(atlasFocusFrame);$('.atlas-shell').classList.remove('focus-arriving');}
 }
 const baseShowLayer=showLayer;
 showLayer=layer=>{baseShowLayer(layer);renderAtlas(layer);};
 renderAtlas('Topology');
+document.fonts.ready.then(stabilizeAtlasText);
 
 // Copy exactly the citation displayed on the page, including on file:// previews.
 $('#copy-citation').addEventListener('click',async()=>{

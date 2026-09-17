@@ -1,0 +1,74 @@
+/* Research figures share the page's paper / ink / blue visual language. */
+.atlas-shell .research-map { margin:0; border:0; border-radius:0; background:#fff; box-shadow:none; }
+.atlas-shell.is-focused .atlas-toolbar { background:#edf2f8; }
+.atlas-shell { overflow-anchor:none; }
+.atlas-info h3 { min-height:var(--atlas-title-height,0px); }
+.atlas-info p { min-height:var(--atlas-description-height,96px); }
+.atlas-info .atlas-examples { min-height:var(--atlas-examples-height,0px); }
+.atlas-info.is-changing h3 { animation:none; }
+.atlas-measure { position:fixed; left:-10000px; top:0; visibility:hidden; pointer-events:none; }
+.atlas-shell[data-atlas-layer="Optimization"] .figure-stage.is-focused,
+.atlas-shell[data-atlas-layer="Runtime"] .figure-stage.is-focused { aspect-ratio:var(--focus-frame-ratio); }
+.atlas-shell.is-focused .figure-caption { min-height:3.3em; }
+.atlas-shell.focus-arriving { animation:atlas-focus-arrival 1.6s ease-out; }
+@keyframes atlas-focus-arrival {
+  0%,25% { border-color:#527daf; box-shadow:0 0 0 4px #608abb30,0 15px 45px #315d9920; }
+  100% { border-color:#c7d4e2; box-shadow:0 30px 65px #243d5710; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .atlas-shell.is-focused { border-color:#527daf; box-shadow:0 0 0 2px #608abb20; }
+}
+.outlook { display:block; }
+.outlook-heading { display:flex; justify-content:space-between; align-items:end; gap:40px; margin-bottom:30px; }
+.outlook-heading h2 { margin-bottom:0; }
+.outlook-heading>p { max-width:340px; color:var(--muted); font-size:14px; margin-bottom:4px; }
+.outlook-cards { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:20px; align-items:start; }
+.outlook .question-card { grid-column:span 2; background:#ffffffc9; border:1px solid #cbd7e5; border-radius:14px; overflow:hidden; transition:border-color .2s,box-shadow .2s; }
+.outlook .question-card:nth-child(n+4) { grid-column:span 3; }
+.outlook .question-card:hover, .outlook .question-card[open] { border-color:#93aecb; box-shadow:0 12px 30px #294b730d; }
+.outlook .question-card[open] { background:#fff; margin:0; padding:0; }
+.outlook .question-card summary { display:block; padding:22px 24px 20px; }
+.question-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.outlook .question-number { font:12px var(--heading); color:#42688f; }
+.outlook .question-toggle { display:grid; place-items:center; width:26px; height:26px; border:1px solid #cad7e6; border-radius:50%; color:#315d99; transition:transform .2s; }
+.question-card[open] .question-toggle { transform:rotate(45deg); }
+.question-card h3 { font-size:21px; margin:0 0 14px; }
+.question-sketch { display:block; width:100%; max-width:370px; margin:0 auto 16px; background:linear-gradient(150deg,#f3f6fa,#fafbfd); border-radius:9px; }
+.question-sketch text { fill:#57708c; font:11px var(--body); }
+.question-sketch .sketch-emphasis { fill:#315d99; }
+.sketch-axis { stroke:#b0c2d7; stroke-width:1.4; fill:none; }
+.sketch-line { stroke:#4c73a2; stroke-width:2.4; fill:none; }
+.muted-line { stroke:#a6bad1; }
+.warm-line { stroke:#b88463; }
+.sketch-guide { stroke:#a9bdd5; stroke-width:1.2; stroke-dasharray:4 4; fill:none; }
+.sketch-dot { fill:#315d99; stroke:#fff; stroke-width:1.5; }
+.sketch-hollow { fill:#fff; stroke:#9db2cd; stroke-width:2; }
+.sketch-box { fill:#f5f8fc; stroke:#b0c4dc; stroke-width:1.2; }
+.emphasis-box { fill:#dce8f7; stroke:#6488b5; }
+.question-card:hover .emphasis-box, .question-card[open] .emphasis-box { fill:#c9dcf2; }
+.question-card:hover .sketch-guide { stroke:#426b9e; }
+.outlook .question-caption { display:block; color:#294c75; font:500 13px/1.55 var(--body); min-height:40px; letter-spacing:0; }
+.outlook .question-affordance { display:block; color:#657b95; font:11px var(--body); margin-top:14px; }
+.outlook .question-affordance span { color:inherit; font:inherit; }
+.when-open, [open] .when-closed { display:none; }
+[open] .when-open { display:inline; }
+.question-detail { border-top:1px solid #d9e2ed; padding:20px 24px 5px; background:#f0f5fa; }
+.outlook .question-detail p { font-size:13px; line-height:1.8; color:#526a85; margin:0 0 18px; }
+.question-detail .inspector-label { font-size:10px; display:block; margin-bottom:7px; }
+@media(max-width:1150px) {
+  .outlook-cards { gap:14px; }
+  .outlook .question-card summary { padding:20px 18px; }
+}
+@media(max-width:760px) {
+  .research-map { margin-top:25px; border-radius:12px; }
+  .outlook-heading { display:block; }
+  .outlook-heading>p { margin:18px 0 0; }
+  .outlook-cards { grid-template-columns:1fr; }
+  .outlook .question-card, .outlook .question-card:nth-child(n+4) { grid-column:auto; }
+  .question-card h3 { font-size:22px; }
+  .outlook .question-caption { min-height:0; }
+  .question-detail { padding:18px 20px 0; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .research-map *, .outlook-cards * { transition:none!important; }
+}
