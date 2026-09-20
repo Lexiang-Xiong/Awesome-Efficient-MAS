@@ -12,7 +12,7 @@ National University of Singapore · University of California, Berkeley · The Ho
 
 **256 cited works** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**
 
-[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://www.preprints.org/manuscript/202609.1639/v1) · [📄 Survey PDF](docs/assets/Efficiency_LLM_MAS_Survey.pdf) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)
+[🌐 Project Page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/assets/Efficiency_LLM_MAS_Survey.pdf) · [📝 Citation](#citation)
 
 </div>
 
