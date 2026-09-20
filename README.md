@@ -540,15 +540,14 @@ For example, the survey reports that MAPGD reduces calls from 962 to 643 and tok
 If you find this survey useful, please cite our work. Version 1 was posted on [Preprints.org](https://www.preprints.org/manuscript/202609.1639/v1) on 20 September 2026.
 
 ```bibtex
-@article{li_efficiency_mas_survey,
-  title  = {Efficiency in {LLM} Multi-Agent Systems: A Survey},
-  author = {Li, Qi and Xiong, Lexiang and Lu, Haiquan and
-            Qu, Wenjie and Yang, Xingyi and Zhang, Jiaheng and
-            Wang, Xinchao},
-  journal = {},
-  year = {2026},
-  doi = {10.20944/preprints202609.1639.v1},
-  url = {https://www.preprints.org/manuscript/202609.1639/v1},
-  note = {Preprints.org, version 1}
+@article{202609.1639,
+	doi = {10.20944/preprints202609.1639.v1},
+	url = {https://doi.org/10.20944/preprints202609.1639.v1},
+	year = 2026,
+	month = {September},
+	publisher = {Preprints},
+	author = {Qi Li and Lexiang Xiong and Haiquan Lu and Wenjie Qu and Xingyi Yang and Jiaheng Zhang and Xinchao Wang},
+	title = {Efficiency in LLM Multi-Agent Systems: A Survey},
+	journal = {Preprints}
 }
 ```
