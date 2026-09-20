@@ -12,7 +12,7 @@ National University of Singapore · University of California, Berkeley · The Ho
 
 **256 cited works** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**
 
-[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📄 Survey PDF](docs/assets/Efficiency_LLM_MAS_Survey.pdf) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)
+[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://www.preprints.org/manuscript/202609.1639/v1) · [📄 Survey PDF](docs/assets/Efficiency_LLM_MAS_Survey.pdf) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)
 
 </div>
 
@@ -537,7 +537,7 @@ For example, the survey reports that MAPGD reduces calls from 962 to 643 and tok
 
 ## Citation
 
-If you find this survey useful, please cite our work. The entry below is a preprint template; the arXiv identifier and publication details are forthcoming.
+If you find this survey useful, please cite our work. Version 1 was posted on [Preprints.org](https://www.preprints.org/manuscript/202609.1639/v1) on 20 September 2026.
 
 ```bibtex
 @article{li_efficiency_mas_survey,
@@ -546,7 +546,9 @@ If you find this survey useful, please cite our work. The entry below is a prepr
             Qu, Wenjie and Yang, Xingyi and Zhang, Jiaheng and
             Wang, Xinchao},
   journal = {},
-  eprint = {},
-  archivePrefix = {arXiv}
+  year = {2026},
+  doi = {10.20944/preprints202609.1639.v1},
+  url = {https://www.preprints.org/manuscript/202609.1639/v1},
+  note = {Preprints.org, version 1}
 }
 ```

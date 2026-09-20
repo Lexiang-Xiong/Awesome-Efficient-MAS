@@ -178,7 +178,7 @@ def write_readme(data):
         "**Qi Li*** · **Lexiang Xiong*** · **Haiquan Lu*** · Wenjie Qu · Xingyi Yang · Jiaheng Zhang · Xinchao Wang", "",
         "National University of Singapore · University of California, Berkeley · The Hong Kong Polytechnic University", "", "<sub>* Equal contribution</sub>", "",
         f"**{len(papers)} cited works** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**", "",
-        "[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)", "", "</div>", "",
+        "[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://www.preprints.org/manuscript/202609.1639/v1) · [📄 Survey PDF](docs/assets/Efficiency_LLM_MAS_Survey.pdf) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)", "", "</div>", "",
         "> When does the benefit of collaboration justify its end-to-end resource cost?", "",
         "LLM multi-agent systems broaden search and combine evidence, but introduce repeated inference, growing message histories, and coordination overhead. This survey connects quality gains to their complete resource cost: first identifying the **collaboration boundary**, then organizing methods by **Topology**, **Runtime**, and **Optimization**.", "",
         "## At a glance", "", "| Control point | What changes | Method families |", "| --- | --- | --- |",
@@ -203,7 +203,7 @@ def write_readme(data):
             lines.append(f"| {p['year'] or '—'} | {title}<br><sub>{md(by)}</sub> |")
         lines.extend(["", "</details>", ""])
     lines.extend(["## Evaluation perspective", "", "Efficiency is a quality–resource trade-off. Use matched baselines, measure realized consumption, and include the lifecycle costs of building and maintaining a configuration.", "", "For example, the survey reports that MAPGD reduces calls from 962 to 643 and tokens from 256k to 236k relative to ProTeGi under a 50-query protocol, while F1 rises from 0.83 to 0.87. Wall time increases from 159.4 to 201.5 seconds. These are paper-specific comparisons, not a cross-paper ranking.", "", "## Open problems", "", "1. **Comparable evaluation:** common budgets, baselines, and uncertainty-aware quality–resource curves.", "2. **Adaptive control:** request- and step-level decisions to continue, escalate, or stop.", "3. **Transfer under drift:** preserving gains as models, tools, and workloads change.", "4. **Causal attribution:** separating the effects of topology, prompts, information, and compute.", "5. **End-to-end cost:** including serving state, tools, recovery, defenses, and maintenance.", "",
-        "## Citation", "", "If you find this survey useful, please cite our work. The entry below is a preprint template; the arXiv identifier and publication details are forthcoming.", ""])
+        "## Citation", "", "If you find this survey useful, please cite our work. Version 1 was posted on [Preprints.org](https://www.preprints.org/manuscript/202609.1639/v1) on 20 September 2026.", ""])
     # Keep the reader-facing citation aligned with the copyable website entry.
     page = (ROOT / "docs/index.html").read_text(encoding="utf-8")
     citation = re.search(r'<code id="citation-code">(.*?)</code>', page, re.S)
