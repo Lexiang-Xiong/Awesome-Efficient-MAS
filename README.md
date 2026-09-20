@@ -521,19 +521,6 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-## Evaluation perspective
-
-Efficiency is a quality–resource trade-off. Use matched baselines, measure realized consumption, and include the lifecycle costs of building and maintaining a configuration.
-
-For example, the survey reports that MAPGD reduces calls from 962 to 643 and tokens from 256k to 236k relative to ProTeGi under a 50-query protocol, while F1 rises from 0.83 to 0.87. Wall time increases from 159.4 to 201.5 seconds. These are paper-specific comparisons, not a cross-paper ranking.
-
-## Open problems
-
-1. **Comparable evaluation:** common budgets, baselines, and uncertainty-aware quality–resource curves.
-2. **Adaptive control:** request- and step-level decisions to continue, escalate, or stop.
-3. **Transfer under drift:** preserving gains as models, tools, and workloads change.
-4. **Causal attribution:** separating the effects of topology, prompts, information, and compute.
-5. **End-to-end cost:** including serving state, tools, recovery, defenses, and maintenance.
 
 ## Citation
 
