@@ -1,6 +1,6 @@
 <div align="center">
 
-# Efficiency in LLM Multi-Agent Systems
+# [Efficiency in LLM Multi-Agent Systems](https://github.com/Lexiang-Xiong/Awesome-Efficient-MAS)
 
 ### A Survey · More intelligence. Less overhead.
 
