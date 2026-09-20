@@ -88,7 +88,7 @@ const config=window.SITE_CONFIG||{};for(const [id,key]of [['repository-link','re
   if(!value)return null;
   try{const url=new URL(value,document.baseURI);return ['https:','http:'].includes(url.protocol)?url.href:null;}catch{return null;}
 }
-for(const [id,key] of [['hero-github','repositoryUrl'],['hero-paper','paperUrl'],['hero-pdf','pdfUrl']]){
+for(const [id,key] of [['hero-github','repositoryUrl'],['hero-pdf','pdfUrl']]){
   const url=publicationUrl(config[key]);if(!url)continue;
   const link=$('#'+id);link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.removeAttribute('aria-disabled');link.removeAttribute('title');link.querySelector('small')?.remove();
 }
