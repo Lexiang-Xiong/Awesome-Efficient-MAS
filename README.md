@@ -90,7 +90,7 @@ The survey compares **29 methods** across the three control points. The table su
 
 Explore the works discussed in the survey, grouped by section. A paper may appear in multiple sections when it addresses several aspects of efficiency.
 
-<details>
+<details open>
 <summary><b>Topology</b> · 27 papers</summary>
 
 | Year | Paper & authors |
