@@ -125,7 +125,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Runtime</b> · 116 papers</summary>
 
 | Year | Paper & authors |
@@ -249,7 +249,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Optimization</b> · 31 papers</summary>
 
 | Year | Paper & authors |
@@ -288,7 +288,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Collaboration Boundary</b> · 10 papers</summary>
 
 | Year | Paper & authors |
@@ -306,7 +306,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Background</b> · 16 papers</summary>
 
 | Year | Paper & authors |
@@ -330,7 +330,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Evaluation</b> · 68 papers</summary>
 
 | Year | Paper & authors |
@@ -406,7 +406,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Synthesis</b> · 13 papers</summary>
 
 | Year | Paper & authors |
@@ -427,7 +427,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Open Problems</b> · 47 papers</summary>
 
 | Year | Paper & authors |
@@ -482,7 +482,7 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 
 </details>
 
-<details>
+<details open>
 <summary><b>Introduction</b> · 31 papers</summary>
 
 | Year | Paper & authors |
