@@ -28,23 +28,7 @@ LLM multi-agent systems broaden search and combine evidence, but introduce repea
 | **Runtime** | Information, models, state, and work activated per request | Communication · Routing · State · Scheduling |
 | **Optimization** | Reusable configurations learned through search or training | Prompt optimization · Workflow search · Policy learning · Continual learning |
 
-```mermaid
-flowchart LR
-  B["Collaboration boundary<br/>Decomposition · Information · Escalation"] --> T[Topology]
-  B --> R[Runtime]
-  B --> O[Optimization]
-  T --> E["Evaluation<br/>Quality × realized resources × lifecycle cost"]
-  R --> E
-  O --> E
-  E --> S["Synthesis & open problems"]
-  style B fill:#F3EFEB,color:#344453,stroke:#A69B93
-  style T fill:#ECE7F2,color:#51465F,stroke:#9184A3
-  style R fill:#E5F0F1,color:#365E65,stroke:#72989E
-  style O fill:#F3E7E3,color:#77564E,stroke:#B78E84
-  style E fill:#F0F2F4,color:#344453,stroke:#8D9BA8
-  style S fill:#F3EFEB,color:#344453,stroke:#A69B93
-  linkStyle default stroke:#9299A5,stroke-width:1.5px
-```
+![Survey structure: collaboration boundary, Topology, Runtime, and Optimization, followed by Evaluation, Synthesis and open problems.](docs/assets/figures/survey-overview.svg)
 
 ## A visual tour of the survey
 

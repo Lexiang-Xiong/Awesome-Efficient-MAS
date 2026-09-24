@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -12 1728 424" role="img" aria-labelledby="title desc">
+<title id="title">Efficiency in LLM Multi-Agent Systems: survey structure</title>
+<desc id="desc">Collaboration boundary leads to Topology, Runtime, and Optimization. All three lead to Evaluation, followed by Synthesis and open problems.</desc>
+<rect x="-23" y="-11" width="1726" height="422" rx="20" fill="#FFFFFF" stroke="#D5DDE7" stroke-width="1.5"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8997AA"/></marker></defs>
+<g fill="none" stroke="#8997AA" stroke-width="1.8" marker-end="url(#arrow)">
+<path d="M364 170 C420 170 440 72 503 72"/>
+<path d="M364 200 H503"/>
+<path d="M364 230 C420 230 440 328 503 328"/>
+<path d="M735 72 C805 72 810 164 873 164"/>
+<path d="M735 200 H873"/>
+<path d="M735 328 C805 328 810 236 873 236"/>
+<path d="M1230 200 H1348"/>
+</g>
+<g font-family="Inter, Segoe UI, Arial, sans-serif">
+<rect x="24" y="134" width="340" height="132" rx="14" fill="#F6F8FB" stroke="#D5DDE7" stroke-width="1.5"/>
+<text x="194" y="171" text-anchor="middle" fill="#25344A" font-size="23" font-weight="600"><tspan x="194" dy="0">Collaboration boundary</tspan></text>
+<text x="194" y="207" text-anchor="middle" fill="#526176" font-size="20" font-weight="500"><tspan x="194" dy="0">Decomposition ·</tspan><tspan x="194" dy="30">Information · Escalation</tspan></text>
+<rect x="505" y="32" width="230" height="80" rx="14" fill="#EFF4FD" stroke="#BBCBE7" stroke-width="1.5"/><rect x="505" y="53" width="4" height="38" rx="2" fill="#567AB4"/><text x="620" y="80" text-anchor="middle" fill="#25344A" font-size="23" font-weight="600"><tspan x="620" dy="0">Topology</tspan></text>
+<rect x="505" y="160" width="230" height="80" rx="14" fill="#EDF7F7" stroke="#B7D8DB" stroke-width="1.5"/><rect x="505" y="181" width="4" height="38" rx="2" fill="#42868F"/><text x="620" y="208" text-anchor="middle" fill="#25344A" font-size="23" font-weight="600"><tspan x="620" dy="0">Runtime</tspan></text>
+<rect x="505" y="288" width="230" height="80" rx="14" fill="#F4F0FA" stroke="#CEC1E2" stroke-width="1.5"/><rect x="505" y="309" width="4" height="38" rx="2" fill="#8771AA"/><text x="620" y="336" text-anchor="middle" fill="#25344A" font-size="23" font-weight="600"><tspan x="620" dy="0">Optimization</tspan></text>
+<rect x="875" y="134" width="355" height="132" rx="14" fill="#F6F8FB" stroke="#D5DDE7" stroke-width="1.5"/>
+<text x="1052.5" y="171" text-anchor="middle" fill="#25344A" font-size="23" font-weight="600"><tspan x="1052.5" dy="0">Evaluation</tspan></text>
+<text x="1052.5" y="207" text-anchor="middle" fill="#526176" font-size="20" font-weight="500"><tspan x="1052.5" dy="0">Quality × realized</tspan><tspan x="1052.5" dy="30">resources × lifecycle cost</tspan></text>
+<rect x="1350" y="150" width="306" height="100" rx="14" fill="#F6F8FB" stroke="#D5DDE7" stroke-width="1.5"/>
+<text x="1503" y="191" text-anchor="middle" fill="#25344A" font-size="22" font-weight="600"><tspan x="1503" dy="0">Synthesis &amp;</tspan><tspan x="1503" dy="30">open problems</tspan></text>
+</g>
+</svg>
