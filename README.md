@@ -37,13 +37,42 @@ flowchart LR
   R --> E
   O --> E
   E --> S["Synthesis & open problems"]
-  style T fill:#85baff,color:#070d1c,stroke:#448aff
-  style R fill:#78d6fa,color:#070d1c,stroke:#3c91bc
-  style O fill:#b8bbff,color:#070d1c,stroke:#777bca
+  style B fill:#F3EFEB,color:#344453,stroke:#A69B93
+  style T fill:#ECE7F2,color:#51465F,stroke:#9184A3
+  style R fill:#E5F0F1,color:#365E65,stroke:#72989E
+  style O fill:#F3E7E3,color:#77564E,stroke:#B78E84
+  style E fill:#F0F2F4,color:#344453,stroke:#8D9BA8
+  style S fill:#F3EFEB,color:#344453,stroke:#A69B93
+  linkStyle default stroke:#9299A5,stroke-width:1.5px
 ```
+
+## A visual tour of the survey
+
+Three views of where efficiency interventions act: the collaboration structure, its execution, and the configurations learned for future tasks.
+
+### 01 · Topology — Shape the team
+
+Prune redundant agents and links, construct task-specific teams, or adapt the collaboration graph as execution unfolds.
+
+[![Topology: pruning, construction, and adaptation of multi-agent collaboration graphs](docs/assets/figures/pruning_figure-2400.webp)](docs/assets/figures/pruning_figure.png)
+
+### 02 · Runtime — Control each request
+
+Compress communication, route computation, reuse memory and cache, and schedule work to reduce execution overhead.
+
+[![Runtime: communication, routing, state reuse, and scheduling](docs/assets/figures/runtime_overview_figure-2400.webp)](docs/assets/figures/runtime_overview_figure.png)
+
+### 03 · Optimization — Learn reusable improvements
+
+Refine prompts, search workflows, learn decision policies, and accumulate reusable skills.
+
+[![Optimization: prompt optimization, workflow search, policy learning, and continual learning](docs/assets/figures/optimization_figure-2400.webp)](docs/assets/figures/optimization_figure.png)
+
+*Figures from the survey. Select an image for the full-resolution version, or [explore the figures and related papers on the project page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/#taxonomy).*
 
 ## Reading guide
 
+- [Visual tour](#a-visual-tour-of-the-survey)
 - [Representative methods](#representative-methods)
 - [Paper collection](#paper-collection)
 - [Evaluation perspective](#evaluation-perspective)
