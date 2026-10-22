@@ -17,7 +17,7 @@ document.querySelectorAll('[data-layer]').forEach((b,index)=>{b.addEventListener
 const corpus=window.SURVEY_DATA||{papers:[],stats:{cited:0}};const papers=corpus.papers;const state={categories:[],match:'any',subfamily:'all',query:'',year:'all',sort:'year-desc',representative:false,page:1,pageSize:5};
 const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const categories=['All papers','Topology','Runtime','Optimization','Collaboration Boundary','Background','Foundations','Evaluation','Synthesis','Open Problems','Introduction','Conclusion'];
-$('#corpus-count').textContent=corpus.stats.cited||papers.length;
+$('#corpus-count').textContent=papers.length;
 const years=[...new Set(papers.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);years.forEach(year=>{const option=document.createElement('option');option.value=year;option.textContent=year;$('#year').append(option);});
 const families=[...new Set(papers.flatMap(p=>p.subfamilies))].sort();
 for(const family of families){const option=document.createElement('option');option.value=family;option.textContent=family;$('#subfamily').append(option);}
@@ -47,7 +47,7 @@ function render(){
   if(state.year!=='all')filters.push(['year',`Year: ${state.year}`,'']);
   if(state.subfamily!=='all')filters.push(['subfamily',state.subfamily,'']);
   if(state.representative)filters.push(['representative','Evidence-table methods only','']);
-  $('#active-filters').innerHTML=filters.length?`<span>${state.categories.length>1?(state.match==='all'?'All selected tags':'Any selected tag'):'Active filters'}</span>${filters.map(([key,label,value])=>`<button class="filter-chip" data-remove-filter="${key}" data-filter-value="${escapeHtml(value)}" aria-label="Remove ${escapeHtml(label)}">${escapeHtml(label)} ×</button>`).join('')}<button class="text-button" id="clear-active-filters">Clear all</button>`:'<span>No filters applied · 256 papers in the collection.</span>';
+  $('#active-filters').innerHTML=filters.length?`<span>${state.categories.length>1?(state.match==='all'?'All selected tags':'Any selected tag'):'Active filters'}</span>${filters.map(([key,label,value])=>`<button class="filter-chip" data-remove-filter="${key}" data-filter-value="${escapeHtml(value)}" aria-label="Remove ${escapeHtml(label)}">${escapeHtml(label)} ×</button>`).join('')}<button class="text-button" id="clear-active-filters">Clear all</button>`:`<span>No filters applied · ${papers.length} papers in the collection.</span>`;
   document.querySelectorAll('[data-remove-filter]').forEach(b=>b.addEventListener('click',()=>{
     const key=b.dataset.removeFilter;
     if(key==='category')state.categories=state.categories.filter(c=>c!==b.dataset.filterValue);

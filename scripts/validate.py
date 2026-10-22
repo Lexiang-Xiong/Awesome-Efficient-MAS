@@ -26,7 +26,9 @@ def validate():
     script = (DOCS / "data/papers.js").read_text(encoding="utf-8")
     assert json.loads(script.removeprefix("window.SURVEY_DATA = ").rstrip().removesuffix(";")) == data, "JSON and browser dataset diverged"
     papers = data["papers"]
-    assert data["stats"]["cited"] == len(papers)
+    assert data["stats"]["collected"] == len(papers)
+    assert data["stats"]["supplemental"] == sum(p.get("collectionSource") == "Project-page addition" for p in papers)
+    assert data["stats"]["cited"] + data["stats"]["supplemental"] == len(papers)
     assert len({p["key"] for p in papers}) == len(papers), "Duplicate paper keys"
     assert sum(bool(p["evidence"]) for p in papers) == data["stats"]["evidenceMethods"]
     bib = (DOCS / "data/references.bib").read_text(encoding="utf-8")
@@ -76,7 +78,7 @@ def validate():
     assert "BadWAM" not in html and "BadWAM" not in (DOCS / "data/site.js").read_text(encoding="utf-8")
     assert not any(p.suffix in {".tex", ".zip", ".env", ".ttf"} for p in DOCS.rglob("*")), "Unexpected manuscript or font assets in publication directory"
     print(f"PASS: {len(papers)} unique papers, {data['stats']['evidenceMethods']} evidence methods, matching JSON/JS/BibTeX, local assets, anchors, safe subpaths, and JavaScript syntax.")
-    print("External paper URLs and publication metadata are copied from the manuscript; network reachability is not asserted.")
+    print("External paper URLs and metadata come from the manuscript or curated supplements; network reachability is not asserted.")
 
 if __name__ == "__main__":
     validate()

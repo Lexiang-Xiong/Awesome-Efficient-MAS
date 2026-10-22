@@ -7,11 +7,13 @@ We welcome relevant papers, taxonomy corrections, and more complete evidence acc
 3. For efficiency claims, include the original baseline, task, quality metric, resource measure, and accounting boundary. Distinguish reported results from derived quantities.
 4. Do not convert paper-specific percentages into a universal ranking.
 
-The manuscript is the source of truth. Update its bibliography and active section citations, then run `scripts/sync_survey.py --source PATH`. This regenerates the website dataset and README together. Do not edit only the generated JavaScript copy.
+For manuscript references, update its bibliography and active section citations, then run `scripts/sync_survey.py --source PATH`. This regenerates the website dataset and README together. Do not edit only the generated JavaScript copy.
+
+For subsequent project-page additions, add a BibTeX entry to `supplemental-papers.bib` and its topic tags and metadata source to `supplemental-papers.json` under the same key. The importer merges these into the existing collection and downloadable bibliography. It preserves their separate provenance, excludes them from the manuscript citation count and evidence table, and avoids duplicating a work once it appears in the manuscript. Use the first publication year for sorting; record later revisions in the BibTeX note.
 
 Verified metadata supplements belong in `metadata-overrides.json`, with the authoritative source and reason recorded. The original downloadable BibTeX remains faithful to the manuscript; website supplements are identified in each dataset record's `metadataSource` field.
 
-Section tags describe citation placement; the representative-method table preserves primary classification from the manuscript. Cross-section citations are expected and do not create additional unique papers.
+Topic tags indicate relevance. For manuscript references they retain citation placement; for subsequent additions they are assigned editorially. Method-family tags may indicate related reading without treating a paper as a representative method. The representative-method table preserves primary classification from the manuscript. Overlapping tags do not create additional unique papers.
 
 For website changes, keep relative asset paths so the site works under a GitHub project subpath. Check keyboard navigation, search, filters, empty results, pagination, and mobile layout. Respect reduced-motion preferences and retain the explicit distinction between illustrative graphs and measured evidence.
 

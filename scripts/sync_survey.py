@@ -78,6 +78,36 @@ def parse_bib(text):
 def citations(text):
     return {key.strip() for match in CITE.finditer(text) for key in match.group(1).split(",")}
 
+def merge_supplements(data, bibliography):
+    """Keep curated additions in the collection without inventing manuscript citations."""
+    extras = parse_bib((ROOT / "supplemental-papers.bib").read_text(encoding="utf-8"))
+    tags = json.loads((ROOT / "supplemental-papers.json").read_text(encoding="utf-8"))
+    if extras.keys() != tags.keys():
+        raise ValueError("Supplemental bibliography and topic tags must have matching keys")
+    papers = [p for p in data["papers"] if p.get("collectionSource") != "Project-page addition"]
+    known_keys = {p["key"] for p in papers}
+    known_urls = {p["url"].rstrip("/") for p in papers if p["url"]}
+    known_titles = {p["title"].casefold() for p in papers}
+    references = parse_bib(bibliography)
+    refs = [raw for key, (_, raw) in references.items() if key not in extras or key in known_keys]
+    data["stats"]["cited"] = len(papers)
+    for key, (fields, raw) in extras.items():
+        if key in known_keys or fields["url"].rstrip("/") in known_urls or fields["title"].casefold() in known_titles:
+            continue  # The manuscript takes precedence once it cites the work.
+        papers.append({"key": key, "title": fields["title"], "authors": fields["author"],
+            "year": int(fields["year"]), "url": fields["url"], "venue": "arXiv",
+            **tags[key], "sourceFiles": [], "method": "", "evidence": None})
+        refs.append(raw)
+        known_keys.add(key)
+        known_urls.add(fields["url"].rstrip("/"))
+        known_titles.add(fields["title"].casefold())
+    data["papers"] = sorted(papers, key=lambda p: p["key"])
+    data["generatedFrom"] = "Active manuscript citations and curated project-page additions"
+    data["classification"] = "Topic tags indicate relevance. Manuscript-derived tags retain citation placement; project-page additions are curated separately. Evidence-table methods retain the manuscript's primary family."
+    data["stats"].update(collected=len(papers), supplemental=len(papers)-data["stats"]["cited"],
+        bySection=dict(Counter(c for p in papers for c in p["categories"])))
+    return data, "\n\n".join(refs) + "\n"
+
 def collect(source):
     entries = parse_bib((source / "references.bib").read_text(encoding="utf-8"))
     main = active((source / "main.tex").read_text(encoding="utf-8"))
@@ -160,12 +190,13 @@ def collect(source):
     result = {"title": "Efficiency in LLM Multi-Agent Systems: A Survey", "generatedFrom": "Active citations in the supplied LaTeX manuscript", "sourceSHA256": digest.hexdigest(),
         "classification": "Section tags record citation placement, not exclusive primary-method classification. Evidence-table methods retain the manuscript's primary family.",
         "stats": {"cited": len(papers), "bibEntries": len(entries), "evidenceMethods": len(evidence), "bySection": dict(Counter(c for p in papers for c in p["categories"]))}, "papers": papers}
+    result, bibliography = merge_supplements(result, "\n\n".join(entries[key][1] for key in sorted(cited)))
     destination = ROOT / "docs/data"
     destination.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     (destination / "papers.json").write_text(payload, encoding="utf-8")
     (destination / "papers.js").write_text("window.SURVEY_DATA = " + payload.rstrip() + ";\n", encoding="utf-8")
-    (destination / "references.bib").write_text("\n\n".join(entries[key][1] for key in sorted(cited)) + "\n", encoding="utf-8")
+    (destination / "references.bib").write_text(bibliography, encoding="utf-8")
     write_readme(result)
     print(json.dumps(result["stats"], indent=2))
 
@@ -202,7 +233,7 @@ def write_readme(data):
     lines = ["<div align=\"center\">", "", "# Efficiency in LLM Multi-Agent Systems", "", "### A Survey · More intelligence. Less overhead.", "",
         "**Qi Li*** · **Lexiang Xiong*** · **Haiquan Lu*** · Wenjie Qu · Xingyi Yang · Jiaheng Zhang · Xinchao Wang", "",
         "National University of Singapore · University of California, Berkeley · The Hong Kong Polytechnic University", "", "<sub>* Equal contribution</sub>", "",
-        f"**{len(papers)} cited works** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**", "",
+        f"**{len(papers)} collected papers** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**", "",
         "[🌐 Interactive page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://www.preprints.org/manuscript/202609.1639/v1) · [📄 Survey PDF](docs/assets/Efficiency_LLM_MAS_Survey.pdf) · [📚 Bibliography](docs/data/references.bib) · [📝 Citation](#citation)", "", "</div>", "",
         "> When does the benefit of collaboration justify its end-to-end resource cost?", "",
         "LLM multi-agent systems broaden search and combine evidence, but introduce repeated inference, growing message histories, and coordination overhead. This survey connects quality gains to their complete resource cost: first identifying the **collaboration boundary**, then organizing methods by **Topology**, **Runtime**, and **Optimization**.", "",
@@ -217,7 +248,7 @@ def write_readme(data):
     for p in sorted((p for p in papers if p["evidence"]), key=lambda p:(['Topology','Runtime','Optimization'].index(p['evidence']['family']),p['evidence']['subfamily'],p['method'])):
         e=p['evidence']; method=f"[{md(p['method'])}]({p['url']})" if p['url'] else md(p['method'])
         lines.append(f"| {e['family']} / {e['subfamily']} | {method} | {md(e['effect'])} | {md(e['boundary'])} |")
-    lines.extend(["", "## Paper collection", "", "Explore the works discussed in the survey, grouped by section. A paper may appear in multiple sections when it addresses several aspects of efficiency.", ""])
+    lines.extend(["", "## Paper collection", "", "Explore the survey references and subsequent additions, grouped by topic. A paper may appear in multiple topics when it addresses several aspects of efficiency.", ""])
     for category in ["Topology", "Runtime", "Optimization", "Collaboration Boundary", "Background", "Foundations", "Evaluation", "Synthesis", "Open Problems", "Introduction", "Conclusion"]:
         selected=sorted((p for p in papers if category in p['categories']), key=lambda p:(-(p['year'] or 0),p['title']))
         if not selected: continue

@@ -13,15 +13,15 @@ for(const [category,count] of Object.entries(stats.bySection)){
   assert.equal(result.page,1);assert.equal(state.query,'');
 }
 const all=model.browse(narrowed,'All papers');
-assert.equal(model.select(papers,all).matches.length,256);
+assert.equal(model.select(papers,all).matches.length,papers.length);
 const shown=[];
 for(let page=1;page<=model.select(papers,all).pages;page++)
   shown.push(...model.select(papers,{...all,page}).items.map(p=>p.key));
-assert.equal(shown.length,256);assert.equal(new Set(shown).size,256);
+assert.equal(shown.length,papers.length);assert.equal(new Set(shown).size,papers.length);
 assert.equal(model.select(papers,all).items.length,5);
-assert.equal(model.select(papers,all).pages,52);
-assert.equal(model.select(papers,{...all,page:52}).items.length,1);
-assert.equal(model.select(papers,{...all,pageSize:10}).pages,26);
+assert.equal(model.select(papers,all).pages,Math.ceil(papers.length/5));
+assert.equal(model.select(papers,{...all,page:999}).items.length,((papers.length-1)%5)+1);
+assert.equal(model.select(papers,{...all,pageSize:10}).pages,Math.ceil(papers.length/10));
 const combination={...base,categories:['Topology','Runtime']};
 assert.equal(model.select(papers,combination).matches.length,papers.filter(p=>p.categories.includes('Topology')||p.categories.includes('Runtime')).length);
 const intersection=model.select(papers,{...combination,match:'all'}).matches;
@@ -35,6 +35,14 @@ assert.deepEqual(model.toggle(toggled,'Topology').categories,[]);
 const family='Optimization / Continual Learning';
 assert.equal(model.select(papers,{...base,subfamily:family}).matches.length,papers.filter(p=>p.subfamilies.includes(family)).length);
 assert.equal(model.browse({...narrowed,subfamily:family},'Topology').subfamily,'all');
-assert.equal(model.select(papers,{...all,query:'   '}).matches.length,256);
+assert.equal(model.select(papers,{...all,query:'   '}).matches.length,papers.length);
 assert.equal(model.select(papers,{...all,query:'no-such-paper-test'}).items.length,0);
-console.log('PASS: category totals, OR/AND tags, combined filters, atlas reset, 5/10-item pagination, and all 256 papers without duplicates.');
+console.log(`PASS: category totals, OR/AND tags, combined filters, atlas reset, 5/10-item pagination, and all ${papers.length} papers without duplicates.`);
+
+// Curated additions remain searchable and never acquire evidence-table status.
+for (const paper of papers.filter(p=>p.collectionSource==='Project-page addition')) {
+  const result=model.select(papers,{...base,categories:['Background'],query:paper.title});
+  assert(result.matches.some(p=>p.key===paper.key));
+  assert(!model.select(papers,{...base,query:paper.title,representative:true}).matches.some(p=>p.key===paper.key));
+  for (const family of paper.subfamilies) assert(model.select(papers,{...base,subfamily:family}).matches.some(p=>p.key===paper.key));
+}

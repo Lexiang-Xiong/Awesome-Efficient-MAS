@@ -10,7 +10,7 @@ National University of Singapore · University of California, Berkeley · The Ho
 
 <sub>* Equal contribution</sub>
 
-**256 cited works** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**
+**257 collected papers** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**
 
 [🌐 Project Page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/assets/Efficiency_LLM_MAS_Survey.pdf) · [📝 Citation](#citation)
 
@@ -101,7 +101,7 @@ The survey compares **29 methods** across the three control points. The table su
 
 ## Paper collection
 
-Explore the works discussed in the survey, grouped by section. A paper may appear in multiple sections when it addresses several aspects of efficiency.
+Explore the survey references and subsequent additions, grouped by topic. A paper may appear in multiple topics when it addresses several aspects of efficiency.
 
 <details open>
 <summary><b>Topology</b> · 27 papers</summary>
@@ -320,10 +320,11 @@ Explore the works discussed in the survey, grouped by section. A paper may appea
 </details>
 
 <details open>
-<summary><b>Background</b> · 16 papers</summary>
+<summary><b>Background</b> · 17 papers</summary>
 
 | Year | Paper & authors |
 | --- | --- |
+| 2025 | [Token Reduction Should Go Beyond Efficiency in Generative Models – From Vision, Language to Multimodality](https://arxiv.org/abs/2505.18227)<br><sub>Zhenglun Kong, Yize Li, Fanhu Zeng, Lei Xin, Shvat Messica, et al.</sub> |
 | 2023 | [AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155)<br><sub>Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin Li, et al.</sub> |
 | 2023 | [CAMEL: Communicative Agents for "Mind" Exploration of Large Language Model Society](https://arxiv.org/abs/2303.17760)<br><sub>Guohao Li, Hasan Abed Al Kader Hammoud, Hani Itani, Dmitrii Khizbullin, Bernard Ghanem</sub> |
 | 2023 | [ChatDev: Communicative Agents for Software Development](https://arxiv.org/abs/2307.07924)<br><sub>Chen Qian, Wei Liu, Hongzhang Liu, Nuo Chen, Yufan Dang, et al.</sub> |

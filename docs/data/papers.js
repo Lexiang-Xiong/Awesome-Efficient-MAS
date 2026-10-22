@@ -1,14 +1,14 @@
 window.SURVEY_DATA = {
   "title": "Efficiency in LLM Multi-Agent Systems: A Survey",
-  "generatedFrom": "Active citations in the supplied LaTeX manuscript",
+  "generatedFrom": "Active manuscript citations and curated project-page additions",
   "sourceSHA256": "2c168205341201922f8013a925d74d3e4f152bc2594ba8e73a4d187cb61b3c98",
-  "classification": "Section tags record citation placement, not exclusive primary-method classification. Evidence-table methods retain the manuscript's primary family.",
+  "classification": "Topic tags indicate relevance. Manuscript-derived tags retain citation placement; project-page additions are curated separately. Evidence-table methods retain the manuscript's primary family.",
   "stats": {
     "cited": 256,
     "bibEntries": 272,
     "evidenceMethods": 29,
     "bySection": {
-      "Background": 16,
+      "Background": 17,
       "Collaboration Boundary": 10,
       "Runtime": 116,
       "Topology": 27,
@@ -17,7 +17,9 @@ window.SURVEY_DATA = {
       "Evaluation": 68,
       "Introduction": 31,
       "Open Problems": 47
-    }
+    },
+    "collected": 257,
+    "supplemental": 1
   },
   "papers": [
     {
@@ -5045,6 +5047,26 @@ window.SURVEY_DATA = {
       "method": "",
       "evidence": null,
       "metadataSource": "Manuscript bibliography"
+    },
+    {
+      "key": "kong2025token",
+      "title": "Token Reduction Should Go Beyond Efficiency in Generative Models – From Vision, Language to Multimodality",
+      "authors": "Zhenglun Kong and Yize Li and Fanhu Zeng and Lei Xin and Shvat Messica and Xue Lin and Pu Zhao and Manolis Kellis and Hao Tang and Marinka Zitnik",
+      "year": 2025,
+      "url": "https://arxiv.org/abs/2505.18227",
+      "venue": "arXiv",
+      "categories": [
+        "Background"
+      ],
+      "subfamilies": [
+        "Runtime / Communication",
+        "Runtime / State"
+      ],
+      "metadataSource": "https://arxiv.org/abs/2505.18227v4",
+      "collectionSource": "Project-page addition",
+      "sourceFiles": [],
+      "method": "",
+      "evidence": null
     },
     {
       "key": "kwiatkowski2019nq",
