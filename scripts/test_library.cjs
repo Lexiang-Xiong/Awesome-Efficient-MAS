@@ -41,8 +41,10 @@ console.log(`PASS: category totals, OR/AND tags, combined filters, atlas reset, 
 
 // Curated additions remain searchable and never acquire evidence-table status.
 for (const paper of papers.filter(p=>p.collectionSource==='Project-page addition')) {
-  const result=model.select(papers,{...base,categories:['Background'],query:paper.title});
-  assert(result.matches.some(p=>p.key===paper.key));
+  for (const category of paper.categories) {
+    const result=model.select(papers,{...base,categories:[category],query:paper.title});
+    assert(result.matches.some(p=>p.key===paper.key));
+  }
   assert(!model.select(papers,{...base,query:paper.title,representative:true}).matches.some(p=>p.key===paper.key));
   for (const family of paper.subfamilies) assert(model.select(papers,{...base,subfamily:family}).matches.some(p=>p.key===paper.key));
 }

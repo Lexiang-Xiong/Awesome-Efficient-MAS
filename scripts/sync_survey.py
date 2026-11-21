@@ -95,7 +95,7 @@ def merge_supplements(data, bibliography):
         if key in known_keys or fields["url"].rstrip("/") in known_urls or fields["title"].casefold() in known_titles:
             continue  # The manuscript takes precedence once it cites the work.
         papers.append({"key": key, "title": fields["title"], "authors": fields["author"],
-            "year": int(fields["year"]), "url": fields["url"], "venue": "arXiv",
+            "year": int(fields["year"]), "url": fields["url"], "venue": fields.get("booktitle", "arXiv"),
             **tags[key], "sourceFiles": [], "method": "", "evidence": None})
         refs.append(raw)
         known_keys.add(key)

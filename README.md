@@ -10,7 +10,7 @@ National University of Singapore · University of California, Berkeley · The Ho
 
 <sub>* Equal contribution</sub>
 
-**257 collected papers** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**
+**258 collected papers** &nbsp; / &nbsp; **3 control points** &nbsp; / &nbsp; **11 method families**
 
 [🌐 Project Page](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/) · [📑 Paper](https://lexiang-xiong.github.io/Awesome-Efficient-MAS/assets/Efficiency_LLM_MAS_Survey.pdf) · [📝 Citation](#citation)
 
@@ -263,7 +263,7 @@ Explore the survey references and subsequent additions, grouped by topic. A pape
 </details>
 
 <details open>
-<summary><b>Optimization</b> · 31 papers</summary>
+<summary><b>Optimization</b> · 32 papers</summary>
 
 | Year | Paper & authors |
 | --- | --- |
@@ -279,6 +279,7 @@ Explore the survey references and subsequent additions, grouped by topic. A pape
 | 2026 | [MAS-PromptBench: When Does Prompt Optimization Improve Multi-Agent LLM Systems?](https://arxiv.org/abs/2606.23664)<br><sub>Juyang Bai, Laixi Shi</sub> |
 | 2026 | [MASPO: Joint Prompt Optimization for LLM-based Multi-Agent Systems](https://arxiv.org/abs/2605.06623)<br><sub>Zhexuan Wang, Xuebo Liu, Li Wang, Zifei Shan, Yutong Wang, et al.</sub> |
 | 2026 | [MASPOB: Bandit-Based Prompt Optimization for Multi-Agent Systems with Graph Neural Networks](https://arxiv.org/abs/2603.02630)<br><sub>Zhi Hong, Qian Zhang, Jiahang Sun, Zhiwei Shang, Mingze Kong, et al.</sub> |
+| 2026 | [NeuroMAS: Multi-Agent Systems as Neural Networks with Joint Reinforcement Learning](https://arxiv.org/abs/2605.16757)<br><sub>Haoran Lu, Luyang Fang, Wenxuan Zhong, Ping Ma · Policy Learning</sub> |
 | 2026 | [SkillGraph: Self-Evolving Multi-Agent Collaboration with Multimodal Graph Topology](https://arxiv.org/abs/2604.17503)<br><sub>Zheng Nie, Ruolin Shen, Xinlei Yu, Bo Yin, Jiangning Zhang, et al.</sub> |
 | 2025 | [Controlling Performance and Budget of a Centralized Multi-agent LLM System with Reinforcement Learning](https://arxiv.org/abs/2511.02755)<br><sub>Bowen Jin, TJ Collins, Donghan Yu, Mert Cemri, Shenao Zhang, et al.</sub> |
 | 2025 | [EvoFlow: Evolving Diverse Agentic Workflows On The Fly](https://arxiv.org/abs/2502.07373)<br><sub>Guibin Zhang, Kaijie Chen, Guancheng Wan, Heng Chang, Hong Cheng, et al.</sub> |

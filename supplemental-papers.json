@@ -4,5 +4,11 @@
     "subfamilies": ["Runtime / Communication", "Runtime / State"],
     "metadataSource": "https://arxiv.org/abs/2505.18227v4",
     "collectionSource": "Project-page addition"
+  },
+  "lu2026neuromas": {
+    "categories": ["Optimization"],
+    "subfamilies": ["Optimization / Policy Learning"],
+    "metadataSource": "https://arxiv.org/abs/2605.16757v3",
+    "collectionSource": "Project-page addition"
   }
 }

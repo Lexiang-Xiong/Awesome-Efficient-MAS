@@ -12,14 +12,14 @@
       "Collaboration Boundary": 10,
       "Runtime": 116,
       "Topology": 27,
-      "Optimization": 31,
+      "Optimization": 32,
       "Synthesis": 13,
       "Evaluation": 68,
       "Introduction": 31,
       "Open Problems": 47
     },
-    "collected": 257,
-    "supplemental": 1
+    "collected": 258,
+    "supplemental": 2
   },
   "papers": [
     {
@@ -5157,6 +5157,25 @@
       "method": "",
       "evidence": null,
       "metadataSource": "Manuscript bibliography"
+    },
+    {
+      "key": "lu2026neuromas",
+      "title": "NeuroMAS: Multi-Agent Systems as Neural Networks with Joint Reinforcement Learning",
+      "authors": "Haoran Lu and Luyang Fang and Wenxuan Zhong and Ping Ma",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2605.16757",
+      "venue": "The First Conference on Statistics and Trustworthy AI for Cross (X)-Domain Acceleration",
+      "categories": [
+        "Optimization"
+      ],
+      "subfamilies": [
+        "Optimization / Policy Learning"
+      ],
+      "metadataSource": "https://arxiv.org/abs/2605.16757v3",
+      "collectionSource": "Project-page addition",
+      "sourceFiles": [],
+      "method": "",
+      "evidence": null
     },
     {
       "key": "maharana2024locomo",
