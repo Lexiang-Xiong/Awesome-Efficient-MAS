@@ -10,5 +10,11 @@
     "subfamilies": ["Optimization / Policy Learning"],
     "metadataSource": "https://arxiv.org/abs/2605.16757v3",
     "collectionSource": "Project-page addition"
+  },
+  "sun2026multiagentopd": {
+    "categories": ["Optimization"],
+    "subfamilies": ["Optimization / Policy Learning"],
+    "metadataSource": "https://arxiv.org/abs/2610.23234v2",
+    "collectionSource": "Project-page addition"
   }
 }

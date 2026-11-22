@@ -12,14 +12,14 @@
       "Collaboration Boundary": 10,
       "Runtime": 116,
       "Topology": 27,
-      "Optimization": 32,
+      "Optimization": 33,
       "Synthesis": 13,
       "Evaluation": 68,
       "Introduction": 31,
       "Open Problems": 47
     },
-    "collected": 258,
-    "supplemental": 2
+    "collected": 259,
+    "supplemental": 3
   },
   "papers": [
     {
@@ -5302,6 +5302,25 @@
       "method": "",
       "evidence": null,
       "metadataSource": "Manuscript bibliography"
+    },
+    {
+      "key": "sun2026multiagentopd",
+      "title": "MultiAgent-OPD: End-to-End Training of Hierarchical Multi-Agent Systems with On-Policy Distillation",
+      "authors": "Yuhan Sun and Jiaxin Zhao and Yongdong Luo and Yibo Hu and Meiguang Jin and Junfeng Ma and Weixun Wang and Weihang Pan and Zhongan Bi",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2610.23234v2",
+      "venue": "arXiv",
+      "categories": [
+        "Optimization"
+      ],
+      "subfamilies": [
+        "Optimization / Policy Learning"
+      ],
+      "metadataSource": "https://arxiv.org/abs/2610.23234v2",
+      "collectionSource": "Project-page addition",
+      "sourceFiles": [],
+      "method": "",
+      "evidence": null
     },
     {
       "key": "suzgun2022bbh",
